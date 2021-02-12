@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
-
-    //анимация кнопок
+    <!--
+изменение размера мелкой кнопки
+      -->
     <scale
         android:duration="500"
         android:fromXScale="0.8"

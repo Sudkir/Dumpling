@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GojaWin0.1</string>
+    <string name="app_name">GojaWin0.2</string>
     <string name="boost_message">Не хватает очков</string>
     <string name="toast_message">Новая игра начата</string>
 </resources>
