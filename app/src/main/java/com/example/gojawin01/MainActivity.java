@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_UPTIME= "UpTime"; // очки
     public static final String APP_PREFERENCES_BOOL = "Bool";
     public static final String APP_PREFERENCES_PRICETIME = "Time"; // прокачка таймера
+    public static final String APP_PREFERENCES_PRICESCORE = "PriceScore"; // прокачка таймера
+    public static final String APP_PREFERENCES_UPONE = "lvlUp"; // прокачка таймера
+
+
     SharedPreferences mSettings;
 
 
@@ -162,12 +166,26 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         //сохранение очков в память при закрытии приложения
         String strCount = mShowCount.getText().toString();
-        String strLvlUpTime = Integer.toString(lvlUpTime);
+
+
+
         SharedPreferences.Editor editor = mSettings.edit();
+
         editor.putString(APP_PREFERENCES_SCORE, strCount);
+
+        String strLvlUpTime = Integer.toString(lvlUpTime);
         editor.putString(APP_PREFERENCES_UPTIME, strLvlUpTime);
+
+        String strLvlUpOne = Integer.toString(lvlUpOne);
+        editor.putString(APP_PREFERENCES_UPONE, strLvlUpOne);
+
+
         String strPriceTime = Integer.toString(boostUpTime);
         editor.putString(APP_PREFERENCES_PRICETIME, strPriceTime);
+
+        String strPriceScore = Integer.toString(boostUp);
+        editor.putString(APP_PREFERENCES_PRICESCORE, strPriceScore);
+
         editor.putBoolean(APP_PREFERENCES_BOOL, bol);
         editor.apply();
 
@@ -187,10 +205,28 @@ public class MainActivity extends AppCompatActivity {
         String valueCount= mShowCount.getText().toString();
         mCount=Integer.parseInt(valueCount);
     }
+
+
+
+    //прокачка клика
+    if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
+        String value=  mSettings.getString(APP_PREFERENCES_PRICESCORE, "");
+        boostUp=Integer.parseInt(value);
+        price.setText(Integer.toString(boostUp));
+
+    }
+
     //прокачка таймера
     if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
        String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
        lvlUpTime=Integer.parseInt(value);
+    }
+
+
+    //прокачка клика
+    if (mSettings.contains(APP_PREFERENCES_UPONE)) {
+        String value= mSettings.getString(APP_PREFERENCES_UPONE, "");
+        lvlUpOne=Integer.parseInt(value);
     }
 
     //цена прокачки таймера
