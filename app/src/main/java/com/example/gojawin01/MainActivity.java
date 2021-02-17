@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public int boostUp = 10; //цена прокачки тика
     public int mCount =0; //общее количесво очков
     public int lvlUpOne = 1; // уровень прокачки
-    public int boostUpTime = 50;
+    public int boostUpTime = 500;
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
     private TextView price; // показ цены клика
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_SCORE= "Score"; // очки
     public static final String APP_PREFERENCES_UPTIME= "UpTime"; // очки
     public static final String APP_PREFERENCES_BOOL = "Bool";
+    public static final String APP_PREFERENCES_PRICETIME = "Time"; // прокачка таймера
     SharedPreferences mSettings;
 
 
@@ -100,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
 
         timerTextView = (TextView) findViewById(R.id.timerTxt);
         Button b = (Button) findViewById(R.id.btnTimer);
+
         mShowCount = (TextView) findViewById(R.id.textView);
+        mCount =0;
+        mShowCount.setText(Integer.toString(mCount));
+
         TimerTxt = (TextView) findViewById(R.id.timerTxt);
         price = (TextView) findViewById(R.id.Price);
         priceTime = (TextView) findViewById(R.id.PriceTime);
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     timerHandler.postDelayed(timerRunnable, 0);
                     b.setVisibility(View.INVISIBLE);
                     mCount = mCount - boostUpTime;
-                    boostUpTime = 1000;
+                    boostUpTime = 500;
                     priceTime.setText(Integer.toString(boostUpTime));
                     bol = true;
 
@@ -161,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(APP_PREFERENCES_SCORE, strCount);
         editor.putString(APP_PREFERENCES_UPTIME, strLvlUpTime);
+        String strPriceTime = Integer.toString(boostUpTime);
+        editor.putString(APP_PREFERENCES_PRICETIME, strPriceTime);
         editor.putBoolean(APP_PREFERENCES_BOOL, bol);
         editor.apply();
 
@@ -171,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
 {
     super.onResume();
+
+    //количествао очков
     if (mSettings.contains(APP_PREFERENCES_SCORE)) {
         // выводим данные в TextView
         mShowCount.setText(mSettings.getString(APP_PREFERENCES_SCORE, ""));
@@ -178,11 +187,19 @@ public class MainActivity extends AppCompatActivity {
         String valueCount= mShowCount.getText().toString();
         mCount=Integer.parseInt(valueCount);
     }
-
+    //прокачка таймера
     if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
        String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
        lvlUpTime=Integer.parseInt(value);
     }
+
+    //цена прокачки таймера
+    if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
+        String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
+        boostUpTime=Integer.parseInt(value);
+        priceTime.setText(Integer.toString(boostUpTime));
+    }
+
 
     //таймер
     if (mSettings.contains(APP_PREFERENCES_BOOL)) {
@@ -196,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
 }
 
     //Клик (чуть не забыли)
@@ -203,11 +222,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //анимация
-        //Button btnDrain = findViewById(R.id.btnDrain);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
         animation.setInterpolator(interpolator);
-        //btnDrain.startAnimation(animation);
         //счетчик
         mCount = mCount + lvlUpOne;
         if (mShowCount != null)
@@ -239,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         boostUp = 10; //цена прокачки тика
         mCount = 0; //общее количесво очков
         lvlUpOne = 1; // уровень прокачки
-        boostUpTime = 50;
+        boostUpTime = 500;
         lvlUpTime = 1; // уровень прокачки
         price.setText(Integer.toString(boostUp));
         priceTime.setText(Integer.toString(boostUpTime));
