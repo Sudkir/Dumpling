@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     TextView timerTextView;
+
     long startTime = 0;
     int seconds;
     int minutes;
@@ -53,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
     public int boostUpTime = 500;
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
-    private TextView price; // показ цены клика
-    private TextView priceTime; // показ цены тайма
-    private  TextView TimerTxt;
+    public TextView price; // показ цены клика
+    public TextView priceTime; // показ цены тайма
+    public  TextView TimerTxt;
     boolean bol = false;
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Button b = (Button) v;
+
 
                 if (mCount>= boostUpTime) {
                     //зануление счётчика
@@ -300,6 +305,42 @@ public class MainActivity extends AppCompatActivity {
         mShowCount.setText(Integer.toString(mCount));
     }
 
+
+    //работа с окном прокачки
+    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
+    public void HertBuy(View view) {//кнопка перехода на новую активность
+
+        Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
+
+        // в ключ username пихаем текст
+       // intent.putExtra("username", (Parcelable) price);
+
+        startActivityForResult(intent, CHOOSE_THIEF);//старт окна
+
+    }
+
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        TextView infoTextView = (TextView) findViewById(R.id.textViewTest);
+
+        if (requestCode == CHOOSE_THIEF) {
+            if (resultCode == RESULT_OK) {
+                String thiefname = data.getStringExtra(MainActivityBuy.THIEF);
+                infoTextView.setText(thiefname);
+            }else {
+                infoTextView.setText(""); // стираем текст
+            }
+        }
+    }
+
+
+
     //прокачка клика
     public void Booster (View view){
 
@@ -348,11 +389,19 @@ public class MainActivity extends AppCompatActivity {
 
         btnBoosterTime.startAnimation(animation);
 
+        //вращение
+        ImageButton imageButton = findViewById(R.id.imageButton);
+        final Animation animationImage =  AnimationUtils.loadAnimation(this, R.anim.rotate);
+        animation.setInterpolator(interpolator);
+        imageButton.setAnimation(animationImage);
 
+
+        //формула прокачки
         if (mCount>= boostUpTime) {
             lvlUpTime++;
             mCount = mCount - boostUpTime;
             boostUpTime = boostUpTime * 6;
+            //возврат значенией
             priceTime.setText(Integer.toString(boostUpTime));
             mShowCount.setText(Integer.toString(mCount));
 

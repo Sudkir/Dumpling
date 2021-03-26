@@ -6,13 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/mainlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/moneyback"
+        android:orientation="vertical"
+        tools:context=".MainActivity"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="30dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/screen_background_light" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="HertBuy"
+            android:text="Button" />
+
+        <TextView
+            android:id="@+id/textViewTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#4CAF50"
         android:text="Очков:"
-        android:textSize="30sp"
+        android:textColor="@android:color/primary_text_light"
 
+        android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -21,12 +57,13 @@
         app:layout_constraintVertical_bias="0.044" />
 
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:text="0"
+        android:textColor="@android:color/primary_text_light"
         android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.486"
@@ -39,14 +76,13 @@
         style="@android:style/Widget.ImageButton"
         android:layout_width="210dp"
         android:layout_height="210dp"
+        android:layout_marginBottom="50dp"
         android:background="@null"
         android:onClick="AnimImageBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.849"
         app:srcCompat="@drawable/ic_baseline_monetization_on_24"
         tools:ignore="VectorDrawableCompat" />
 
@@ -58,13 +94,14 @@
         android:background="@drawable/button_states"
         android:text="Restart"
         android:textSize="12sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/Booster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="228dp"
@@ -76,48 +113,71 @@
 
     <TextView
         android:id="@+id/Price"
-        android:layout_width="40dp"
-        android:layout_height="20dp"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="125dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="240dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginRight="52dp"
+        android:background="#4CAF50"
         android:text="10"
+        android:textColor="@android:color/primary_text_light"
+        android:textColorLink="#3046C3"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="68dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="56dp"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:background="#4CAF50"
         android:text="Купить за"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.255"
+        android:textColor="@android:color/primary_text_light"
+        android:textColorLink="#3046C3"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btnBoosterTime"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView3"
+        style="@style/Widget.AppCompat.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="240dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="65dp"
+        android:background="#4CAF50"
         android:text="Купить за "
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.27"
+        android:textColor="@android:color/primary_text_light"
+        android:textColorLink="#3046C3"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/Booster"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/PriceTime"
-        android:layout_width="41dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="56dp"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="125dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"
+        android:background="#4CAF50"
         android:text="500"
+        android:textColor="@android:color/primary_text_light"
+        android:textColorLink="#3046C3"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/Price" />
 
@@ -160,5 +220,6 @@
         tools:layout_editor_absoluteX="4dp"
         tools:layout_editor_absoluteY="7dp"
         tools:visibility="gone" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
