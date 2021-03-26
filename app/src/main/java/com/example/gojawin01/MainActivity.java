@@ -312,8 +312,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
 
-        // в ключ username пихаем текст
-       // intent.putExtra("username", (Parcelable) price);
+        //работа с классом BuyUp
+        TextView boostUpText = findViewById(R.id.Price);
+        int boostUpCl = Integer.parseInt(boostUpText.getText().toString());
+        TextView mCountText = findViewById(R.id.textView);
+        int mCountCl = Integer.parseInt(boostUpText.getText().toString());
+        int lvlUpOneCl = 1;
+
+        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl);//создание экземпляра класса
+
+        intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
 
         startActivityForResult(intent, CHOOSE_THIEF);//старт окна
 
@@ -330,7 +338,9 @@ public class MainActivity extends AppCompatActivity {
         TextView infoTextView = (TextView) findViewById(R.id.textViewTest);
 
         if (requestCode == CHOOSE_THIEF) {
-            if (resultCode == RESULT_OK) {
+
+            if (resultCode == RESULT_OK) //если результат возвращен через кнопку
+            {
                 String thiefname = data.getStringExtra(MainActivityBuy.THIEF);
                 infoTextView.setText(thiefname);
             }else {
