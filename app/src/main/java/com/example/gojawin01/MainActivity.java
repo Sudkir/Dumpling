@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             timerTextView.setText(String.format("%d", seconds));
             timerHandler.postDelayed(this, 1000);
 
-
             mCount=mCount + lvlUpTime;
             mShowCount.setText(Integer.toString(mCount));
         }
@@ -124,12 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         final Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
 
-
-
-
-
-
-
         //Кнопка покупки
         b.setOnClickListener(new View.OnClickListener() {
 
@@ -159,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     protected void onPause() {
@@ -171,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         //сохранение очков в память при закрытии приложения
         String strCount = mShowCount.getText().toString();
-
-
 
         SharedPreferences.Editor editor = mSettings.edit();
 
@@ -196,7 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+    //onCreate->onStart->onResume
+    }
 
     protected void onResume()
 {
@@ -254,9 +250,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //принятие данных из второй формы через класс BuyUp
+    //обновление данных
+
+    Bundle arguments = getIntent().getExtras();
+    if(arguments!=null) {//проверка на NULL
+        BuyUp buyUp;
+        buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+
+        //работа с данными
+        TextView infoTextView = (TextView)findViewById(R.id.textView);
+        boostUp = buyUp.getBoostUpCl();
+        mCount = buyUp.getMCount();
+        lvlUpOne = buyUp.getLvlUpOneCl();
+
+        infoTextView.setText(Integer.toString(mCount));
+    }
 
 
 }
+
 
     //Клик (чуть не забыли)
     public void countUp(View view) {
@@ -273,7 +286,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AnimImageBtn(View view) {
-
         ImageButton imageButton = findViewById(R.id.imageButton);
         final Animation animation =  AnimationUtils.loadAnimation(this, R.anim.bounce);
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
@@ -316,40 +328,15 @@ public class MainActivity extends AppCompatActivity {
         TextView boostUpText = findViewById(R.id.Price);
         int boostUpCl = Integer.parseInt(boostUpText.getText().toString());
         TextView mCountText = findViewById(R.id.textView);
-        int mCountCl = Integer.parseInt(boostUpText.getText().toString());
-        int lvlUpOneCl = 1;
-
-        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl);//создание экземпляра класса
-
+        int mCountCl = Integer.parseInt(mCountText.getText().toString());
+        int lvlUpOneCl = lvlUpOne;
+        //создание экземпляра класса
+        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
-
-        startActivityForResult(intent, CHOOSE_THIEF);//старт окна
+        //старт окна
+        startActivityForResult(intent, CHOOSE_THIEF);
 
     }
-
-
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        TextView infoTextView = (TextView) findViewById(R.id.textViewTest);
-
-        if (requestCode == CHOOSE_THIEF) {
-
-            if (resultCode == RESULT_OK) //если результат возвращен через кнопку
-            {
-                String thiefname = data.getStringExtra(MainActivityBuy.THIEF);
-                infoTextView.setText(thiefname);
-            }else {
-                infoTextView.setText(""); // стираем текст
-            }
-        }
-    }
-
-
 
     //прокачка клика
     public void Booster (View view){
@@ -370,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
         imageButton.setAnimation(animationImage);
 
 
-
+        //покупка если хватает очков
         if (mCount>= boostUp) {
             lvlUpOne = lvlUpOne * 2;
             mCount = mCount - boostUp;
@@ -414,8 +401,6 @@ public class MainActivity extends AppCompatActivity {
             //возврат значенией
             priceTime.setText(Integer.toString(boostUpTime));
             mShowCount.setText(Integer.toString(mCount));
-
-
         }
         else
         {
@@ -423,6 +408,4 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
     }
-
-
 }

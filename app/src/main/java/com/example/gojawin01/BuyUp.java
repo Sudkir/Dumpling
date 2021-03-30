@@ -15,12 +15,17 @@ public class BuyUp implements Serializable {
     //public TextView priceTime; // показ цены тайма
     //boolean bol = false;
 
+
+    //конструктор класса
     public BuyUp(int boostUpCl, int mCountCl, int lvlUpOneCl){
         this.boostUpCl = boostUpCl;
         this.mCountCl = mCountCl;
         this.lvlUpOneCl = lvlUpOneCl;
     }
 
+
+
+    //гетеры и сетеры
     public int getBoostUpCl() {
         return boostUpCl;
     }

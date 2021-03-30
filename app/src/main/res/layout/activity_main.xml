@@ -90,8 +90,8 @@
         android:id="@+id/btnShow"
         android:layout_width="99dp"
         android:layout_height="36dp"
-        android:onClick="showToast"
         android:background="@drawable/button_states"
+        android:onClick="showToast"
         android:text="Restart"
         android:textSize="12sp"
 
