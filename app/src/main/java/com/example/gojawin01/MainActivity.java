@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-
     //сохранение данных
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_SCORE= "Score"; // очки
@@ -94,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     SharedPreferences mSettings;
-
-
-
 
 
     @Override
@@ -112,11 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mShowCount = (TextView) findViewById(R.id.textView);
         mCount =0;
         mShowCount.setText(Integer.toString(mCount));
-
-        TimerTxt = (TextView) findViewById(R.id.timerTxt);
         price = (TextView) findViewById(R.id.Price);
-        priceTime = (TextView) findViewById(R.id.PriceTime);
-
 
         //сейв переменных
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
@@ -141,13 +133,11 @@ public class MainActivity extends AppCompatActivity {
                     b.setVisibility(View.INVISIBLE);
                     mCount = mCount - boostUpTime;
                     boostUpTime = 500;
-                    priceTime.setText(Integer.toString(boostUpTime));
                     bol = true;
 
                 }
                 else
                 {
-
                     toast.show();
                 }
             }
@@ -159,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         //пауза приложения
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //onCreate->onStart->onResume
     }
 
     protected void onStop(){
@@ -176,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
         String strLvlUpOne = Integer.toString(lvlUpOne);
         editor.putString(APP_PREFERENCES_UPONE, strLvlUpOne);
 
-
         String strPriceTime = Integer.toString(boostUpTime);
         editor.putString(APP_PREFERENCES_PRICETIME, strPriceTime);
 
@@ -188,15 +183,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    //onCreate->onStart->onResume
-    }
+
 
     protected void onResume()
 {
     super.onResume();
+
+    AnimDollar();
 
     //количествао очков
     if (mSettings.contains(APP_PREFERENCES_SCORE)) {
@@ -206,38 +199,27 @@ public class MainActivity extends AppCompatActivity {
         String valueCount= mShowCount.getText().toString();
         mCount=Integer.parseInt(valueCount);
     }
-
-
-
     //прокачка клика
     if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
         String value=  mSettings.getString(APP_PREFERENCES_PRICESCORE, "");
         boostUp=Integer.parseInt(value);
-        price.setText(Integer.toString(boostUp));
-
     }
-
     //прокачка таймера
     if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
        String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
        lvlUpTime=Integer.parseInt(value);
     }
-
-
-    //прокачка клика
+     //прокачка клика
     if (mSettings.contains(APP_PREFERENCES_UPONE)) {
         String value= mSettings.getString(APP_PREFERENCES_UPONE, "");
         lvlUpOne=Integer.parseInt(value);
     }
-
     //цена прокачки таймера
     if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
         String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
         boostUpTime=Integer.parseInt(value);
-        priceTime.setText(Integer.toString(boostUpTime));
+        //priceTime.setText(Integer.toString(boostUpTime));
     }
-
-
     //таймер
     if (mSettings.contains(APP_PREFERENCES_BOOL)) {
         bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
@@ -263,30 +245,10 @@ public class MainActivity extends AppCompatActivity {
             boostUp = buyUp.getBoostUpCl();
             mCount = buyUp.getMCount();
             lvlUpOne = buyUp.getLvlUpOneCl();
-            price.setText(Integer.toString(boostUp));
             mShowCount.setText(Integer.toString(mCount));
         }
-
-
     }
-
-
 }
-
-
-    //Клик (чуть не забыли)
-    public void countUp(View view) {
-
-
-        //анимация
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
-        animation.setInterpolator(interpolator);
-        //счетчик
-        mCount = mCount + lvlUpOne;
-        if (mShowCount != null)
-            mShowCount.setText(Integer.toString(mCount));
-    }
 
     public void AnimImageBtn(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
@@ -314,8 +276,7 @@ public class MainActivity extends AppCompatActivity {
         lvlUpOne = 1; // уровень прокачки
         boostUpTime = 500;
         lvlUpTime = 1; // уровень прокачки
-        price.setText(Integer.toString(boostUp));
-        priceTime.setText(Integer.toString(boostUpTime));
+
         b.setVisibility(View.VISIBLE);
         mShowCount.setText(Integer.toString(mCount));
     }
@@ -324,58 +285,14 @@ public class MainActivity extends AppCompatActivity {
     //работа с окном прокачки
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public void HertBuy(View view) {//кнопка перехода на новую активность
-
         Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
 
-        //работа с классом BuyUp
-        TextView boostUpText = findViewById(R.id.Price);
-        int boostUpCl = Integer.parseInt(boostUpText.getText().toString());
-        TextView mCountText = findViewById(R.id.textView);
-        int mCountCl = Integer.parseInt(mCountText.getText().toString());
-        int lvlUpOneCl = lvlUpOne;
-        int boostUpTimeCl = Integer.parseInt(priceTime.getText().toString());
-        //создание экземпляра класса
-        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl,boostUpTimeCl);
+        //работа с классом BuyUp создание экземпляра класса
+        BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         //старт окна
         startActivityForResult(intent, CHOOSE_THIEF);
 
-    }
-
-    //прокачка клика
-    public void Booster (View view){
-
-        //анимация
-        Button Booster = findViewById(R.id.Booster);
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bouncebtn);
-
-        // amplitude 0.2 and frequency 20
-        BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
-        animation.setInterpolator(interpolator);
-        Booster.startAnimation(animation);
-
-
-        ImageButton imageButton = findViewById(R.id.imageButton);
-        final Animation animationImage =  AnimationUtils.loadAnimation(this, R.anim.rotate);
-        animation.setInterpolator(interpolator);
-        imageButton.setAnimation(animationImage);
-
-
-        //покупка если хватает очков
-        if (mCount>= boostUp) {
-            lvlUpOne = lvlUpOne * 2;
-            mCount = mCount - boostUp;
-            boostUp = boostUp *4;
-            price.setText(Integer.toString(boostUp));
-            mShowCount.setText(Integer.toString(mCount));
-
-
-        }
-        else
-        {
-            Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
-            toast.show();
-        }
     }
 
 
@@ -383,15 +300,11 @@ public class MainActivity extends AppCompatActivity {
     {
 
         //анимация
-        Button btnBoosterTime = findViewById(R.id.btnBoosterTime);
+        //Button btnBoosterTime = findViewById(R.id.btnBoosterTime);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bouncebtn);
-
         // amplitude 0.2 and frequency 20
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
         animation.setInterpolator(interpolator);
-
-        btnBoosterTime.startAnimation(animation);
-
         //вращение
         ImageButton imageButton = findViewById(R.id.imageButton);
         final Animation animationImage =  AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -399,24 +312,4 @@ public class MainActivity extends AppCompatActivity {
         imageButton.setAnimation(animationImage);
     }
 
-    //прокачка таймера
-    public void BoosterTime (View view){
-        AnimDollar();
-
-
-        //формула прокачки
-        if (mCount>= boostUpTime) {
-            lvlUpTime++;
-            mCount = mCount - boostUpTime;
-            boostUpTime = boostUpTime * 6;
-            //возврат значенией
-            priceTime.setText(Integer.toString(boostUpTime));
-            mShowCount.setText(Integer.toString(mCount));
-        }
-        else
-        {
-            Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
-            toast.show();
-        }
-    }
 }

@@ -6,40 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/mainlayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/moneyback"
-        android:orientation="vertical"
-        tools:context=".MainActivity"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="30dp">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/screen_background_light" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="HertBuy"
-            android:text="Button" />
-
-        <TextView
-            android:id="@+id/textViewTest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -74,8 +40,8 @@
     <ImageButton
         android:id="@+id/imageButton"
         style="@android:style/Widget.ImageButton"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
+        android:layout_width="325dp"
+        android:layout_height="325dp"
         android:layout_marginBottom="50dp"
         android:background="@null"
         android:onClick="AnimImageBtn"
@@ -86,131 +52,6 @@
         app:srcCompat="@drawable/ic_baseline_monetization_on_24"
         tools:ignore="VectorDrawableCompat" />
 
-    <Button
-        android:id="@+id/btnShow"
-        android:layout_width="99dp"
-        android:layout_height="36dp"
-        android:background="@drawable/button_states"
-        android:onClick="showToast"
-        android:text="Restart"
-        android:textSize="12sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/Booster"
-        android:layout_width="130dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="228dp"
-        android:background="@drawable/button_states"
-        android:onClick="Booster"
-        android:text="Прокачать Tic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Price"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="125dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="240dp"
-        android:background="#4CAF50"
-        android:text="10"
-        android:textColor="@android:color/primary_text_light"
-        android:textColorLink="#3046C3"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="50dp"
-        android:background="#4CAF50"
-        android:text="Купить за"
-        android:textColor="@android:color/primary_text_light"
-        android:textColorLink="#3046C3"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/btnBoosterTime"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="65dp"
-        android:background="#4CAF50"
-        android:text="Купить за "
-        android:textColor="@android:color/primary_text_light"
-        android:textColorLink="#3046C3"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/Booster"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/PriceTime"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="125dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="50dp"
-        android:background="#4CAF50"
-        android:text="500"
-        android:textColor="@android:color/primary_text_light"
-        android:textColorLink="#3046C3"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/Price" />
-
-    <Button
-        android:id="@+id/btnBoosterTime"
-        android:layout_width="131dp"
-        android:layout_height="56dp"
-
-        android:layout_marginTop="16dp"
-        android:onClick="BoosterTime"
-        android:text="прокачать etc/sec"
-        android:background="@drawable/button_states"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Booster"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnTimer"
-        android:layout_width="130dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_states"
-        android:text="Пассивный доход"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Booster"
-        app:layout_constraintVertical_bias="0.0" />
-
     <TextView
         android:id="@+id/timerTxt"
         android:layout_width="73dp"
@@ -220,6 +61,43 @@
         tools:layout_editor_absoluteX="4dp"
         tools:layout_editor_absoluteY="7dp"
         tools:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnTimer"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
+        android:background="@drawable/button_states"
+        android:text="Пассивный доход"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/screen_background_light" />
+
+    <Button
+        android:id="@+id/btnShow"
+        android:layout_width="99dp"
+        android:layout_height="36dp"
+        android:background="@drawable/button_states"
+        android:onClick="showToast"
+        android:text="Restart"
+        android:textSize="12sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="126dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_states"
+        android:onClick="HertBuy"
+        android:text="прокачка"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@
         android:id="@+id/exitBtn"
         android:layout_width="92dp"
         android:layout_height="75dp"
-        android:onClick="HertMain"
+        android:onClick="ReturnMain"
         android:text="exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"

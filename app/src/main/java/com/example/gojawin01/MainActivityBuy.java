@@ -14,6 +14,8 @@ public class MainActivityBuy extends AppCompatActivity {
     public int mCount =0; //общее количесво очков
     public int lvlUpOne = 1; // уровень прокачки
     public int boostUpTime =500;//цена прокачки тайма
+    public int lvlUpTime = 1; // уровень прокачки
+    boolean timerBool ;
 
     public TextView price; // показ цены клика
     public TextView priceTime; // показ цены тайма
@@ -54,6 +56,7 @@ public  void Pered()//передача переменных
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     @Override
@@ -68,23 +71,15 @@ public  void Pered()//передача переменных
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public final static String THIEF = "com.example.gojawin01.THIEF";
 
-    public void HertMain(View view) {//кнопка перехода на новую активность
-
-        Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
-
-        int boostUpCl = Integer.parseInt(price.getText().toString());
-        int mCountCl = Integer.parseInt(countView.getText().toString());
-        int lvlUpOneCl = lvlUpOne;
-        int boostUpTimeCl = Integer.parseInt(priceTime.getText().toString());
+    public void ReturnMain(View view)
+    {
         //создание экземпляра класса
-        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl,boostUpTimeCl);
+        Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
+        BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,timerBool);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         //старт окна
         startActivity(intent);
-
     }
-
-
 
     //прокачка клика вывод обновленных результатов
     public void Booster (View view){
@@ -111,7 +106,7 @@ public  void Pered()//передача переменных
         buyUp.setLvlUpOneCl(lvlUpOne);
     }
 
-/*
+
 
     //прокачка таймера
     public void BoosterTime (View view){
@@ -125,7 +120,7 @@ public  void Pered()//передача переменных
             boostUpTime = boostUpTime * 6;
             //возврат значенией
             priceTime.setText(Integer.toString(boostUpTime));
-            mShowCount.setText(Integer.toString(mCount));
+            countView.setText(Integer.toString(mCount));
         }
         else
         {
@@ -133,8 +128,6 @@ public  void Pered()//передача переменных
             toast.show();
         }
     }
-
-*/
 
 
 }

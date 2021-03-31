@@ -9,15 +9,13 @@ public class BuyUp implements Serializable {
     public int mCountCl =0; //общее количесво очков
     public int lvlUpOneCl = 1; // уровень прокачки
     public int boostUpTimeCl = 500;
-    //public int lvlUpTime = 1; // уровень прокачки
-    //public TextView mShowCount; // показ очков
-    //public TextView price; // показ цены клика
-    //public TextView priceTime; // показ цены тайма
-    //boolean bol = false;
+
+    public int lvlUpTimeCl = 1; // уровень прокачки
+    boolean timerBoolCl ;
 
 
     //конструктор класса
-    public BuyUp(int boostUpCl, int mCountCl, int lvlUpOneCl, int boostUpTimeCl){
+    public BuyUp(int boostUpCl, int mCountCl, int lvlUpOneCl, int boostUpTimeCl,int lvlUpTimeCl,boolean timerBoolCl){
         this.boostUpCl = boostUpCl;
         this.mCountCl = mCountCl;
         this.lvlUpOneCl = lvlUpOneCl;
@@ -59,5 +57,13 @@ public class BuyUp implements Serializable {
         this.boostUpTimeCl = boostUpTimeCl;
     }
 
+
+    public int getLvlUpTimeCl() {
+        return lvlUpTimeCl;
+    }
+
+    public void setLvlUpTimeCl(int lvlUpTimeCl) {
+        this.lvlUpTimeCl = lvlUpTimeCl;
+    }
 
 }
