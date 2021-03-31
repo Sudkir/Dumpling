@@ -191,6 +191,24 @@ public class MainActivity extends AppCompatActivity {
 
     AnimDollar();
 
+
+    //принятие данных из второй формы через класс BuyUp
+    //обновление данных
+
+    Bundle arguments = getIntent().getExtras();
+    if(arguments!=null) {//проверка на NULL
+        BuyUp buyUp;
+        buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+        //работа с данными
+
+        if (buyUp != null) {
+            boostUp = buyUp.getBoostUpCl();
+            mCount = buyUp.getMCount();
+            lvlUpOne = buyUp.getLvlUpOneCl();
+            mShowCount.setText(Integer.toString(mCount));
+        }
+    }
+
     //количествао очков
     if (mSettings.contains(APP_PREFERENCES_SCORE)) {
         // выводим данные в TextView
@@ -232,22 +250,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //принятие данных из второй формы через класс BuyUp
-    //обновление данных
-
-    Bundle arguments = getIntent().getExtras();
-    if(arguments!=null) {//проверка на NULL
-        BuyUp buyUp;
-        buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
-        //работа с данными
-
-        if (buyUp != null) {
-            boostUp = buyUp.getBoostUpCl();
-            mCount = buyUp.getMCount();
-            lvlUpOne = buyUp.getLvlUpOneCl();
-            mShowCount.setText(Integer.toString(mCount));
-        }
-    }
 }
 
     public void AnimImageBtn(View view) {

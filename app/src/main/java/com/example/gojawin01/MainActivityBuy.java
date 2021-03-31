@@ -21,6 +21,9 @@ public class MainActivityBuy extends AppCompatActivity {
     public TextView priceTime; // показ цены тайма
     public TextView countView; // показ очков
 
+    public TextView lvlClick; // показ цены клика
+    public TextView lvlTime; // показ цены клика
+
 public  void Pered()//передача переменных
 {
     Bundle arguments = getIntent().getExtras();
@@ -31,10 +34,6 @@ public  void Pered()//передача переменных
     mCount = buyUp.getMCount();
     lvlUpOne = buyUp.getLvlUpOneCl();
     boostUpTime = buyUp.getBoostUpTimeCl();
-    //вывод на экран
-    priceTime.setText(Integer.toString(boostUpTime));
-    price.setText(Integer.toString(boostUp));
-    countView.setText(Integer.toString(mCount));
 
 }
 
@@ -47,9 +46,12 @@ public  void Pered()//передача переменных
         priceTime = (TextView) findViewById(R.id.PriceTime);
         countView = (TextView)findViewById(R.id.CountView);
 
+        lvlClick = (TextView) findViewById(R.id.lvlClickText);
+        lvlTime = (TextView)findViewById(R.id.lvlTimeText);
+
         //передача переменных
         Pered();
-
+        Zagruzka();
 
     }
 
@@ -64,7 +66,7 @@ public  void Pered()//передача переменных
         super.onResume();
         //передача переменных
         Pered();
-
+        Zagruzka();
 
     }
 
@@ -81,6 +83,15 @@ public  void Pered()//передача переменных
         startActivity(intent);
     }
 
+    public void Zagruzka()
+    {
+        countView.setText(Integer.toString(mCount));
+        priceTime.setText(Integer.toString(boostUpTime));
+        price.setText(Integer.toString(boostUp));
+        lvlClick.setText(Integer.toString(lvlUpOne));
+        lvlTime.setText(Integer.toString(lvlUpTime));
+    }
+
     //прокачка клика вывод обновленных результатов
     public void Booster (View view){
 
@@ -89,6 +100,7 @@ public  void Pered()//передача переменных
             mCount = mCount - boostUp;
             boostUp = boostUp *4;
             price.setText(Integer.toString(boostUp));
+
         }
         else
         {
@@ -96,7 +108,9 @@ public  void Pered()//передача переменных
             toast.show();
         }
 
-        countView.setText(Integer.toString(mCount));
+
+
+
         //обновление данных в классе
         Bundle arguments = getIntent().getExtras();
         BuyUp buyUp;
@@ -104,6 +118,14 @@ public  void Pered()//передача переменных
         buyUp.setBoostUpCl(boostUp);
         buyUp.setMCount(mCount);
         buyUp.setLvlUpOneCl(lvlUpOne);
+        buyUp.setBoostUpTimeCl(boostUpTime);
+        buyUp.setLvlUpTimeCl(lvlUpTime);
+
+        Zagruzka();
+
+
+
+
     }
 
 
@@ -121,12 +143,27 @@ public  void Pered()//передача переменных
             //возврат значенией
             priceTime.setText(Integer.toString(boostUpTime));
             countView.setText(Integer.toString(mCount));
+            lvlTime.setText(Integer.toString(lvlUpTime));
         }
         else
         {
             Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
             toast.show();
         }
+
+
+        //обновление данных в классе
+        Bundle arguments = getIntent().getExtras();
+        BuyUp buyUp;
+        buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+        buyUp.setBoostUpCl(boostUp);
+        buyUp.setMCount(mCount);
+        buyUp.setLvlUpOneCl(lvlUpOne);
+        buyUp.setBoostUpTimeCl(boostUpTime);
+        buyUp.setLvlUpTimeCl(lvlUpTime);
+
+        Zagruzka();
+
     }
 
 
