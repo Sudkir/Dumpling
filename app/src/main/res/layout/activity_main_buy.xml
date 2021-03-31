@@ -7,7 +7,7 @@
     tools:context=".MainActivityBuy">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/CountView"
         android:layout_width="205dp"
         android:layout_height="58dp"
         android:layout_marginTop="16dp"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toStartOf="@+id/Price"
         app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toEndOf="@+id/Booster"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/CountView" />
 
     <TextView
         android:id="@+id/Price"
@@ -71,7 +71,7 @@
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/CountView" />
 
     <TextView
         android:id="@+id/PriceTime"

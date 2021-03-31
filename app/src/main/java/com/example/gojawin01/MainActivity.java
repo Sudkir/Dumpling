@@ -257,14 +257,17 @@ public class MainActivity extends AppCompatActivity {
     if(arguments!=null) {//проверка на NULL
         BuyUp buyUp;
         buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
-
         //работа с данными
-        TextView infoTextView = (TextView)findViewById(R.id.textView);
-        boostUp = buyUp.getBoostUpCl();
-        mCount = buyUp.getMCount();
-        lvlUpOne = buyUp.getLvlUpOneCl();
 
-        infoTextView.setText(Integer.toString(mCount));
+        if (buyUp != null) {
+            boostUp = buyUp.getBoostUpCl();
+            mCount = buyUp.getMCount();
+            lvlUpOne = buyUp.getLvlUpOneCl();
+            price.setText(Integer.toString(boostUp));
+            mShowCount.setText(Integer.toString(mCount));
+        }
+
+
     }
 
 
@@ -330,8 +333,9 @@ public class MainActivity extends AppCompatActivity {
         TextView mCountText = findViewById(R.id.textView);
         int mCountCl = Integer.parseInt(mCountText.getText().toString());
         int lvlUpOneCl = lvlUpOne;
+        int boostUpTimeCl = Integer.parseInt(priceTime.getText().toString());
         //создание экземпляра класса
-        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl);
+        BuyUp buyUp = new BuyUp(boostUpCl, mCountCl, lvlUpOneCl,boostUpTimeCl);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         //старт окна
         startActivityForResult(intent, CHOOSE_THIEF);
@@ -374,9 +378,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //прокачка таймера
-    public void BoosterTime (View view){
-         //анимация
+
+    public void AnimDollar()
+    {
+
+        //анимация
         Button btnBoosterTime = findViewById(R.id.btnBoosterTime);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bouncebtn);
 
@@ -391,6 +397,11 @@ public class MainActivity extends AppCompatActivity {
         final Animation animationImage =  AnimationUtils.loadAnimation(this, R.anim.rotate);
         animation.setInterpolator(interpolator);
         imageButton.setAnimation(animationImage);
+    }
+
+    //прокачка таймера
+    public void BoosterTime (View view){
+        AnimDollar();
 
 
         //формула прокачки
