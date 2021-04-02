@@ -5,12 +5,12 @@ import java.io.Serializable;
 
 public class BuyUp implements Serializable {
 
-    public int boostUpCl = 10; //цена прокачки тика
-    public int mCountCl =0; //общее количесво очков
-    public int lvlUpOneCl = 1; // уровень прокачки
-    public int boostUpTimeCl = 500;
+    public int boostUpCl; //цена прокачки тика
+    public int mCountCl; //общее количесво очков
+    public int lvlUpOneCl; // уровень прокачки
+    public int boostUpTimeCl;
 
-    public int lvlUpTimeCl = 1; // уровень прокачки
+    public int lvlUpTimeCl; // уровень прокачки
     boolean timerBoolCl ;
 
 
@@ -20,6 +20,7 @@ public class BuyUp implements Serializable {
         this.mCountCl = mCountCl;
         this.lvlUpOneCl = lvlUpOneCl;
         this.boostUpTimeCl = boostUpTimeCl;
+        this.lvlUpTimeCl = lvlUpTimeCl;
     }
 
 

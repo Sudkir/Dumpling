@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
     public TextView price; // показ цены клика
-    public TextView priceTime; // показ цены тайма
-    public  TextView TimerTxt;
     boolean bol = false;
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -88,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_UPTIME= "UpTime"; // очки
     public static final String APP_PREFERENCES_BOOL = "Bool";
     public static final String APP_PREFERENCES_PRICETIME = "Time"; // прокачка таймера
-    public static final String APP_PREFERENCES_PRICESCORE = "PriceScore"; // прокачка таймера
-    public static final String APP_PREFERENCES_UPONE = "lvlUp"; // прокачка таймера
+    public static final String APP_PREFERENCES_PRICESCORE = "PriceScore"; //
+    public static final String APP_PREFERENCES_UPONE = "lvlUp"; //
 
 
     SharedPreferences mSettings;
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     timerHandler.postDelayed(timerRunnable, 0);
                     b.setVisibility(View.INVISIBLE);
                     mCount = mCount - boostUpTime;
-                    boostUpTime = 500;
+                    //boostUpTime = 500;
                     bol = true;
 
                 }
@@ -155,6 +153,47 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         //onCreate->onStart->onResume
+
+        //количествао очков
+        if (mSettings.contains(APP_PREFERENCES_SCORE)) {
+            // выводим данные в TextView
+            mShowCount.setText(mSettings.getString(APP_PREFERENCES_SCORE, ""));
+            //переводит очки
+            String valueCount= mShowCount.getText().toString();
+            mCount=Integer.parseInt(valueCount);
+        }
+        //прокачка клика
+        if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
+            String value=  mSettings.getString(APP_PREFERENCES_PRICESCORE, "");
+            boostUp=Integer.parseInt(value);
+        }
+        //прокачка таймера
+        if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
+            String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
+            lvlUpTime=Integer.parseInt(value);
+        }
+        //прокачка клика
+        if (mSettings.contains(APP_PREFERENCES_UPONE)) {
+            String value= mSettings.getString(APP_PREFERENCES_UPONE, "");
+            lvlUpOne=Integer.parseInt(value);
+        }
+        //цена прокачки таймера
+        if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
+            String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
+            boostUpTime=Integer.parseInt(value);
+            //priceTime.setText(Integer.toString(boostUpTime));
+        }
+        //таймер
+        if (mSettings.contains(APP_PREFERENCES_BOOL)) {
+            bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
+            if (bol == true){
+                Button b = (Button) findViewById(R.id.btnTimer);
+                //старт таймера
+                startTime = System.currentTimeMillis();
+                timerHandler.postDelayed(timerRunnable, 0);
+                b.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     protected void onStop(){
@@ -206,49 +245,13 @@ public class MainActivity extends AppCompatActivity {
             mCount = buyUp.getMCount();
             lvlUpOne = buyUp.getLvlUpOneCl();
             mShowCount.setText(Integer.toString(mCount));
+            lvlUpTime = buyUp.getLvlUpTimeCl();
+            boostUpTime = buyUp.getBoostUpTimeCl();
         }
+
     }
 
-    //количествао очков
-    if (mSettings.contains(APP_PREFERENCES_SCORE)) {
-        // выводим данные в TextView
-        mShowCount.setText(mSettings.getString(APP_PREFERENCES_SCORE, ""));
-        //переводит очки
-        String valueCount= mShowCount.getText().toString();
-        mCount=Integer.parseInt(valueCount);
-    }
-    //прокачка клика
-    if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
-        String value=  mSettings.getString(APP_PREFERENCES_PRICESCORE, "");
-        boostUp=Integer.parseInt(value);
-    }
-    //прокачка таймера
-    if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
-       String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
-       lvlUpTime=Integer.parseInt(value);
-    }
-     //прокачка клика
-    if (mSettings.contains(APP_PREFERENCES_UPONE)) {
-        String value= mSettings.getString(APP_PREFERENCES_UPONE, "");
-        lvlUpOne=Integer.parseInt(value);
-    }
-    //цена прокачки таймера
-    if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
-        String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
-        boostUpTime=Integer.parseInt(value);
-        //priceTime.setText(Integer.toString(boostUpTime));
-    }
-    //таймер
-    if (mSettings.contains(APP_PREFERENCES_BOOL)) {
-        bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
-        if (bol == true){
-            Button b = (Button) findViewById(R.id.btnTimer);
-            //старт таймера
-            startTime = System.currentTimeMillis();
-            timerHandler.postDelayed(timerRunnable, 0);
-            b.setVisibility(View.INVISIBLE);
-        }
-    }
+
 
 }
 
@@ -276,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         boostUp = 10; //цена прокачки тика
         mCount = 0; //общее количесво очков
         lvlUpOne = 1; // уровень прокачки
-        boostUpTime = 500;
+        //boostUpTime = 500;
         lvlUpTime = 1; // уровень прокачки
 
         b.setVisibility(View.VISIBLE);
