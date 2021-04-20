@@ -1,15 +1,26 @@
 package com.example.gojawin01;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.renderscript.RenderScript;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -92,10 +103,19 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences mSettings;
 
+    //создание менеджера уведомлений
+    private NotificationManager notificationManager;
+    // Идентификатор уведомления
+    private static final int NOTIFY_ID = 1;
+    // Идентификатор канала
+    private static String CHANNEL_ID = "CHANNEL_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //уведомление менеджер
+        notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
         setContentView(R.layout.activity_main);
         //спрятать заголовок
         getSupportActionBar().hide();
@@ -254,6 +274,43 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+
+
+
+@RequiresApi(api = Build.VERSION_CODES.O)
+public void Uved(View v){
+            //создание канала
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                    0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//звук
+
+            //свойства уведомления
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                            .setAutoCancel(true)
+                            .setContentInfo("Aboba")
+                            .setWhen(System.currentTimeMillis())//время
+                            .setSmallIcon(R.drawable.ic_baseline_monetization_on_24)//пикча
+                            .setContentTitle("Напоминание")
+                            .setContentText("Пук Пук")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            //.setVibrate()
+                            .setSound(uri)
+                            .setContentIntent(pendingIntent);
+
+    //запуск
+    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
+    notificationManager.createNotificationChannel(notificationChannel);
+    notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+
+    }
+
+
+
 
     public void AnimImageBtn(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
