@@ -1,15 +1,15 @@
 package com.example.gojawin01;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -53,7 +53,7 @@ public  void Pered()//передача переменных
 
 }
 
-    public void Zagruzka()
+    public void LoadData()
     {
         countView.setText(Integer.toString(mCount));
         priceTime.setText(Integer.toString(boostUpTime));
@@ -90,7 +90,7 @@ public  void Pered()//передача переменных
 
         //передача переменных
         Pered();
-        Zagruzka();
+        LoadData();
 
     }
 
@@ -105,7 +105,7 @@ public  void Pered()//передача переменных
         super.onResume();
         //передача переменных
         Pered();
-        Zagruzka();
+        LoadData();
 
     }
 
@@ -121,42 +121,48 @@ public  void Pered()//передача переменных
 
         UpdateData();
 
-
-//
-/*
-        PendingIntent contentIntent = PendingIntent.getActivity(MainActivityBuy.this,
-                0, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(MainActivityBuy.this, CHANNEL_ID)
-                        //.setSmallIcon(R.drawable.ic_pets_black_24dp) пикча
-                        .setContentTitle("Достижение получено")
-                        .setContentText("Куплено 10 ускорений времени")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(contentIntent)
-                        .setAutoCancel(true); // автоматически закрыть уведомление после нажатия;
-
-        //.setLargeIcon(BitmapFactory.decodeResource(getResources(),
-        //R.drawable.hungrycat)) // большая картинка
-        //.setTicker("Последнее китайское предупреждение!") // до Lollipop
-        //.setAutoCancel(true); // автоматически закрыть уведомление после нажатия
-
-        NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(MainActivityBuy.this);
-        notificationManager.notify(NOTIFY_ID, builder.build());
-
-*/
-
-
         //старт окна
         startActivity(intent);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public <string> void showNotification(string strContentTitle,string strContentText){
+
+
+
+        //создание канала
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        //свойства уведомления
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                        .setAutoCancel(true)
+                        .setWhen(System.currentTimeMillis())//время
+                        .setSmallIcon(R.drawable.ic_baseline_monetization_on_24)//пикча
+                        .setContentTitle((CharSequence) strContentTitle)
+                        .setContentText((CharSequence) strContentText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setLights(Color.WHITE, 3000, 3000)
+                        .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                        .setContentIntent(pendingIntent);
+        notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+
+        //запуск
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager.createNotificationChannel(notificationChannel);
+        notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+    }
+
+
 
     //прокачка клика вывод обновленных результатов
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void Booster (View view){
 
         if (mCount>= boostUp) {
@@ -165,6 +171,8 @@ public  void Pered()//передача переменных
             boostUp = boostUp *4;
             price.setText(Integer.toString(boostUp));
 
+
+
         }
         else
         {
@@ -173,28 +181,27 @@ public  void Pered()//передача переменных
         }
         //обновление данных в классе
         UpdateData();
-        Zagruzka();
+        LoadData();
     }
 
 
 
     //прокачка таймера
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void BoosterTime (View view){
         //формула прокачки
         if (mCount>= boostUpTime) {
             lvlUpTime++;
             mCount = mCount - boostUpTime;
             boostUpTime = boostUpTime * 6;
-            /*
-            //возврат значенией
-            priceTime.setText(Integer.toString(boostUpTime));
-            countView.setText(Integer.toString(mCount));
-            lvlTime.setText(Integer.toString(lvlUpTime));
-            */
 
+            if (lvlUpTime==10) {
+                showNotification("Достижение получено!", "Куплено 10 улучшений клика");
+            }
 
-
-
+            if (lvlUpTime==20) {
+                showNotification("Достижение получено!","Куплено 20 улучшений клика");
+            }
 
         }
         else
@@ -204,7 +211,7 @@ public  void Pered()//передача переменных
         }
         //обновление данных в классе
         UpdateData();
-        Zagruzka();
+        LoadData();
 
     }
 

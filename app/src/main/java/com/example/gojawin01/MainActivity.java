@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
         final Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
+        final Toast toastTimer = Toast.makeText(this, "Нужно накопить 500 очков", Toast.LENGTH_LONG);
 
         //Кнопка покупки
         b.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    toast.show();
+                    toastTimer.show();
                 }
             }
         });
@@ -275,39 +277,61 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public <string> void showNotification(string strContentTitle,string strContentText){
 
 
 
-@RequiresApi(api = Build.VERSION_CODES.O)
-public void Uved(View v){
-            //создание канала
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                    0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        //создание канала
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-            Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//звук
+        //свойства уведомления
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                        .setAutoCancel(true)
+                        .setWhen(System.currentTimeMillis())//время
+                        .setSmallIcon(R.drawable.ic_baseline_monetization_on_24)//пикча
+                        .setContentTitle((CharSequence) strContentTitle)
+                        .setContentText((CharSequence) strContentText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setLights(Color.WHITE, 3000, 3000)
+                        .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                        .setContentIntent(pendingIntent);
+        notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 
-            //свойства уведомления
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                            .setAutoCancel(true)
-                            .setContentInfo("Aboba")
-                            .setWhen(System.currentTimeMillis())//время
-                            .setSmallIcon(R.drawable.ic_baseline_monetization_on_24)//пикча
-                            .setContentTitle("Напоминание")
-                            .setContentText("Пук Пук")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            //.setVibrate()
-                            .setSound(uri)
-                            .setContentIntent(pendingIntent);
+        //запуск
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager.createNotificationChannel(notificationChannel);
+        notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+    }
 
-    //запуск
-    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
-    notificationManager.createNotificationChannel(notificationChannel);
-    notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+
+
+    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void SettingsBtn(View v){
+        showNotification("228","\uD83D\uDC7D");
+
+
+        //работа с окном прокачки
+
+
+            Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
+            startActivity(intent);
+
+            //работа с классом BuyUp создание экземпляра класса
+            //BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
+            //intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
+            //старт окна
+            //startActivityForResult(intent, CHOOSE_THIEF);
 
     }
+
 
 
 
@@ -345,7 +369,7 @@ public void Uved(View v){
 
 
     //работа с окном прокачки
-    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
+    //static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public void HertBuy(View view) {//кнопка перехода на новую активность
         Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
 
