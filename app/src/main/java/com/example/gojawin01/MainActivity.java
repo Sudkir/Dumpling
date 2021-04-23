@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -72,13 +71,11 @@ public class MainActivity extends AppCompatActivity {
     public TextView mShowCount; // показ очков
     public TextView price; // показ цены клика
     boolean bol = false;
-    boolean muteBool = true;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
 
-        @SuppressLint("SetTextI18n")
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
@@ -91,10 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
             mCount=mCount + lvlUpTime;
             mShowCount.setText(Integer.toString(mCount));
-            //mShowCount.setText(Integer.toString(fmCount));
-            //double fmCount = mCount;
-            //mShowCount.setText(String.format("%f.2",fmCount));
-            //mShowCount.setText(Float.toString(fmCount));
         }
     };
 
@@ -107,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_PRICETIME = "Time"; // прокачка таймера
     public static final String APP_PREFERENCES_PRICESCORE = "PriceScore"; //
     public static final String APP_PREFERENCES_UPONE = "lvlUp"; //
-    public static final String APP_PREFERENCES_MUTE = "Mute"; //мут музыки
 
 
     SharedPreferences mSettings;
@@ -224,12 +216,6 @@ public class MainActivity extends AppCompatActivity {
                 b.setVisibility(View.INVISIBLE);
             }
         }
-
-        //mute
-        if (mSettings.contains(APP_PREFERENCES_MUTE)) {
-            muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
-
-        }
     }
 
     protected void onStop(){
@@ -256,9 +242,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean(APP_PREFERENCES_BOOL, bol);
         editor.apply();
 
-        editor.putBoolean(APP_PREFERENCES_MUTE, muteBool);
-        editor.apply();
-
     }
 
 
@@ -270,56 +253,14 @@ public class MainActivity extends AppCompatActivity {
     AnimDollar();
 
 
-
-
-    /*
-
-    MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic();
-    if(mediaPlayerMusic.MusicMute==true)
-    {
-        mediaPlayerMusic.MusicStart(this);
-    }
-
-
-
-    final MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(true);
-        mediaPlayerMusic.MusicMute=true;
-         final Context context = this;
-
-        Switch switchMusic = (Switch) findViewById(R.id.switch1);
-        switchMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                mediaPlayerMusic.setMusicMute(isChecked);
-                mediaPlayerMusic.MusicStart(context);
-
-
-            }*/
-
-
     //принятие данных из второй формы через класс BuyUp
     //обновление данных
 
     Bundle arguments = getIntent().getExtras();
-    Bundle arguments1 = getIntent().getExtras();
-    if(arguments1!=null) {//проверка на NULL
-        MediaPlayerMusic mediaPlayerMusic;
-        mediaPlayerMusic = (MediaPlayerMusic) arguments1.getSerializable(MediaPlayerMusic.class.getSimpleName());
-        //работа с данными
-        if(mediaPlayerMusic != null)
-        {
-            muteBool = mediaPlayerMusic.getMusicMute();
-        }
-    }
-    if(arguments!=null ) {//проверка на NULL
+    if(arguments!=null) {//проверка на NULL
         BuyUp buyUp;
-
-        buyUp = (BuyUp) arguments.getSerializable(MediaPlayerMusic.class.getSimpleName());
-
-
-
-
+        buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+        //работа с данными
 
         if (buyUp != null) {
             boostUp = buyUp.getBoostUpCl();
@@ -371,7 +312,25 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void SettingsBtn(View v){
+        showNotification("228","\uD83D\uDC7D");
 
+
+        //работа с окном прокачки
+
+
+            Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
+            startActivity(intent);
+
+            //работа с классом BuyUp создание экземпляра класса
+            //BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
+            //intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
+            //старт окна
+            //startActivityForResult(intent, CHOOSE_THIEF);
+
+    }
 
 
 
@@ -408,29 +367,7 @@ public class MainActivity extends AppCompatActivity {
         mShowCount.setText(Integer.toString(mCount));
     }
 
-    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
-    static final private int CHOOSE_THIEF1 = 0;// параметр RequestCode
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void SettingsBtn(View v){
-        showNotification("228","\uD83D\uDC7D");
 
-
-        //работа с окном прокачки
-        Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
-
-        //работа с классом BuyUp создание экземпляра класса
-        MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(muteBool);
-
-        //ошибка в загрузке
-        intent.putExtra(MediaPlayerMusic.class.getSimpleName(), (Parcelable) mediaPlayerMusic);
-        //старт окна
-        startActivityForResult(intent, CHOOSE_THIEF1);
-
-        //Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
-        //startActivity(intent);
-
-
-    }
     //работа с окном прокачки
     //static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public void HertBuy(View view) {//кнопка перехода на новую активность
