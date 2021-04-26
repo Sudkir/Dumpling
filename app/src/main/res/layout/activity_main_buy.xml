@@ -134,4 +134,13 @@
         app:layout_constraintBottom_toTopOf="@+id/btnBoosterTime"
         tools:layout_editor_absoluteX="36dp" />
 
+    <Button
+        android:id="@+id/btnTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startTimerBuy"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

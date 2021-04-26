@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class MainActivityBuy extends AppCompatActivity {
 
     public TextView lvlClick; // показ уровня клика
     public TextView lvlTime; // показ цены тайма
+    boolean bmute;
 
 public  void Pered()//передача переменных
 {
@@ -50,9 +53,16 @@ public  void Pered()//передача переменных
     lvlUpOne = buyUp.getLvlUpOneCl();
     boostUpTime = buyUp.getBoostUpTimeCl();
     lvlUpTime = buyUp.getLvlUpTimeCl();
+    timerBool = buyUp.getTimerBoolCl();
+    bmute = arguments.getBoolean("mute");
+        if(bmute) {
+            MediaPlayerMusic.onResume();
+        }
+
 
 }
 
+    @SuppressLint("SetTextI18n")
     public void LoadData()
     {
         countView.setText(Integer.toString(mCount));
@@ -60,6 +70,10 @@ public  void Pered()//передача переменных
         price.setText(Integer.toString(boostUp));
         lvlClick.setText("boost= "+ lvlUpOne);
         lvlTime.setText("lvl= "+ lvlUpTime);
+        if (timerBool){
+            Button b = (Button) findViewById(R.id.btnTimer);
+            b.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -74,6 +88,9 @@ public  void Pered()//передача переменных
         buyUp.setLvlUpOneCl(lvlUpOne);
         buyUp.setBoostUpTimeCl(boostUpTime);
         buyUp.setLvlUpTimeCl(lvlUpTime);
+        buyUp.seTimerBoolCl(timerBool);
+
+
     }
 
     @Override
@@ -107,6 +124,7 @@ public  void Pered()//передача переменных
         Pered();
         LoadData();
 
+
     }
 
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
@@ -118,16 +136,36 @@ public  void Pered()//передача переменных
         Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
         BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,timerBool);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
+        intent.putExtra("mute", bmute);
 
         UpdateData();
 
         //старт окна
         startActivity(intent);
     }
+    protected void onPause() {
+        super.onPause();
+        MediaPlayerMusic.onPause();
+    }
 
 
 
 
+    public void startTimerBuy(View view){
+        Toast toastTimer = Toast.makeText(this, "Нужно накопить 500 очков", Toast.LENGTH_LONG);
+        if (mCount>= boostUpTime) {
+            mCount =mCount- boostUpTime;
+            timerBool = true;
+            Button b = (Button) findViewById(R.id.btnTimer);
+            b.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            toastTimer.show();
+        }
+        UpdateData();
+        LoadData();
+    }
 
 
 
@@ -173,6 +211,7 @@ public  void Pered()//передача переменных
 
 
     //прокачка клика вывод обновленных результатов
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void Booster (View view){
 
@@ -181,9 +220,6 @@ public  void Pered()//передача переменных
             mCount = mCount - boostUp;
             boostUp = boostUp *4;
             price.setText(Integer.toString(boostUp));
-
-
-
         }
         else
         {

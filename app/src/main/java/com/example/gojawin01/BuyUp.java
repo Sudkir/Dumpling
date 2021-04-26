@@ -21,6 +21,7 @@ public class BuyUp implements Serializable {
         this.lvlUpOneCl = lvlUpOneCl;
         this.boostUpTimeCl = boostUpTimeCl;
         this.lvlUpTimeCl = lvlUpTimeCl;
+        this.timerBoolCl = timerBoolCl;
     }
 
 
@@ -63,8 +64,18 @@ public class BuyUp implements Serializable {
         return lvlUpTimeCl;
     }
 
+
     public void setLvlUpTimeCl(int lvlUpTimeCl) {
         this.lvlUpTimeCl = lvlUpTimeCl;
+    }
+
+    public void seTimerBoolCl(boolean timerBoolCl) {
+        this.timerBoolCl = timerBoolCl;
+    }
+
+
+    public boolean getTimerBoolCl() {
+        return timerBoolCl;
     }
 
 }

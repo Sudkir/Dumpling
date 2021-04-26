@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         timerTextView = (TextView) findViewById(R.id.timerTxt);
-        Button b = (Button) findViewById(R.id.btnTimer);
+
 
         mShowCount = (TextView) findViewById(R.id.textView);
         mCount =0;
@@ -144,32 +144,7 @@ public class MainActivity extends AppCompatActivity {
         final Toast toastTimer = Toast.makeText(this, "Нужно накопить 500 очков", Toast.LENGTH_LONG);
 
         //Кнопка покупки
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Button b = (Button) v;
-
-
-                if (mCount>= boostUpTime) {
-                    //зануление счётчика
-                    timerHandler.removeCallbacks(timerRunnable);
-                    //старт таймера
-                    startTime = System.currentTimeMillis();
-                    timerHandler.postDelayed(timerRunnable, 0);
-                    b.setVisibility(View.INVISIBLE);
-                    mCount = mCount - boostUpTime;
-                    //boostUpTime = 500;
-                    bol = true;
-
-                }
-                else
-                {
-                    toastTimer.show();
-                }
-            }
-        });
+        //b.setOnClickListener(new View.OnClickListener() {});
 
     }
 
@@ -217,18 +192,15 @@ public class MainActivity extends AppCompatActivity {
         //таймер
         if (mSettings.contains(APP_PREFERENCES_BOOL)) {
             bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
-            if (bol == true){
-                Button b = (Button) findViewById(R.id.btnTimer);
-                //старт таймера
-                startTime = System.currentTimeMillis();
-                timerHandler.postDelayed(timerRunnable, 0);
-                b.setVisibility(View.INVISIBLE);
-            }
+
         }
 
         //mute
         if (mSettings.contains(APP_PREFERENCES_MUTE)) {
             muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
+            if (muteBool){
+                //старт музыки
+            }
 
         }
     }
@@ -254,8 +226,10 @@ public class MainActivity extends AppCompatActivity {
         String strPriceScore = Integer.toString(boostUp);
         editor.putString(APP_PREFERENCES_PRICESCORE, strPriceScore);
 
-        editor.putBoolean(APP_PREFERENCES_BOOL, bol);
+        boolean boolTimer = bol;
+        editor.putBoolean(APP_PREFERENCES_BOOL, boolTimer);
         editor.apply();
+
 
         editor.putBoolean(APP_PREFERENCES_MUTE, muteBool);
         editor.apply();
@@ -263,38 +237,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void ResemeAll()
+    {
+        //принятие данных из второй формы через класс BuyUp
+        //обновление данных
+
+        Bundle arguments = getIntent().getExtras();
+        if(arguments!=null) {//проверка на NULL
+            BuyUp buyUp;
+            buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+            //работа с данными
+
+            if (buyUp != null) {
+                boostUp = buyUp.getBoostUpCl();
+                mCount = buyUp.getMCount();
+                lvlUpOne = buyUp.getLvlUpOneCl();
+                mShowCount.setText(Integer.toString(mCount));
+                lvlUpTime = buyUp.getLvlUpTimeCl();
+                boostUpTime = buyUp.getBoostUpTimeCl();
+                bol = buyUp.getTimerBoolCl();
+            }
+
+        }
+
+        if (bol)
+        {
+            //зануление счётчика
+            timerHandler.removeCallbacks(timerRunnable);
+            //старт таймера
+            startTime = System.currentTimeMillis();
+            timerHandler.postDelayed(timerRunnable, 0);
+        }
+
+
+
+
+        Bundle arguments1 = getIntent().getExtras();
+
+        if(arguments1!=null) {
+            muteBool = arguments1.getBoolean("mute");
+            if(muteBool) {
+                MediaPlayerMusic.onResume();
+            }
+        }
+
+    }
+
 
     protected void onResume()
 {
     super.onResume();
 
     AnimDollar();
-
-
-
-    Bundle arguments = getIntent().getExtras();
-
-    if(arguments!=null ) {//проверка на NULL
-        BuyUp buyUp;
-
-        buyUp = (BuyUp) arguments.getSerializable(MediaPlayerMusic.class.getSimpleName());
-        if (buyUp != null) {
-            boostUp = buyUp.getBoostUpCl();
-            mCount = buyUp.getMCount();
-            lvlUpOne = buyUp.getLvlUpOneCl();
-            mShowCount.setText(Integer.toString(mCount));
-            lvlUpTime = buyUp.getLvlUpTimeCl();
-            boostUpTime = buyUp.getBoostUpTimeCl();
-        }
-
+    ResemeAll();
     }
 
-    Bundle arguments1 = getIntent().getExtras();
-
-    if(arguments1!=null) {
-        muteBool = arguments1.getBoolean("mute");
-    }
-}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public <string> void showNotification(string strContentTitle,string strContentText){
@@ -390,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
         //работа с классом BuyUp создание экземпляра класса
         BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
+        intent.putExtra("mute", muteBool);
         //старт окна
         startActivityForResult(intent, CHOOSE_THIEF);
 
