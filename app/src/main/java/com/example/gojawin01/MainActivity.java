@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onPause() {
         super.onPause();
+        MediaPlayerMusic.onPause();
         //пауза приложения
 
     }
@@ -271,56 +272,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    /*
-
-    MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic();
-    if(mediaPlayerMusic.MusicMute==true)
-    {
-        mediaPlayerMusic.MusicStart(this);
-    }
-
-
-
-    final MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(true);
-        mediaPlayerMusic.MusicMute=true;
-         final Context context = this;
-
-        Switch switchMusic = (Switch) findViewById(R.id.switch1);
-        switchMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                mediaPlayerMusic.setMusicMute(isChecked);
-                mediaPlayerMusic.MusicStart(context);
-
-
-            }*/
-
-
-    //принятие данных из второй формы через класс BuyUp
-    //обновление данных
-
     Bundle arguments = getIntent().getExtras();
-    Bundle arguments1 = getIntent().getExtras();
-    if(arguments1!=null) {//проверка на NULL
-        MediaPlayerMusic mediaPlayerMusic;
-        mediaPlayerMusic = (MediaPlayerMusic) arguments1.getSerializable(MediaPlayerMusic.class.getSimpleName());
-        //работа с данными
-        if(mediaPlayerMusic != null)
-        {
-            muteBool = mediaPlayerMusic.getMusicMute();
-        }
-    }
+
     if(arguments!=null ) {//проверка на NULL
         BuyUp buyUp;
 
         buyUp = (BuyUp) arguments.getSerializable(MediaPlayerMusic.class.getSimpleName());
-
-
-
-
-
         if (buyUp != null) {
             boostUp = buyUp.getBoostUpCl();
             mCount = buyUp.getMCount();
@@ -332,8 +289,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    Bundle arguments1 = getIntent().getExtras();
 
-
+    if(arguments1!=null) {
+        muteBool = arguments1.getBoolean("mute");
+    }
 }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -409,28 +369,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
-    static final private int CHOOSE_THIEF1 = 0;// параметр RequestCode
+
     @RequiresApi(api = Build.VERSION_CODES.O)
+
+
     public void SettingsBtn(View v){
         showNotification("228","\uD83D\uDC7D");
-
-
-        //работа с окном прокачки
         Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
-
-        //работа с классом BuyUp создание экземпляра класса
-        MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(muteBool);
-
-        //ошибка в загрузке
-        intent.putExtra(MediaPlayerMusic.class.getSimpleName(), (Parcelable) mediaPlayerMusic);
-        //старт окна
-        startActivityForResult(intent, CHOOSE_THIEF1);
-
-        //Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
-        //startActivity(intent);
-
-
+        intent.putExtra("mute", muteBool);
+        startActivity(intent);
     }
+
+
+
     //работа с окном прокачки
     //static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public void HertBuy(View view) {//кнопка перехода на новую активность

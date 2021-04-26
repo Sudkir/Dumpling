@@ -126,6 +126,17 @@ public  void Pered()//передача переменных
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public <string> void showNotification(string strContentTitle,string strContentText){
 

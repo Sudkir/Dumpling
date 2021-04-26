@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivitySettings extends Activity {
 
-boolean bmute;
+boolean bmute = true;
 
 
     @Override
@@ -22,23 +22,33 @@ boolean bmute;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Switch switchMusic = (Switch) findViewById(R.id.switch1);
-        LoadData();
-        final MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(bmute);
-
         final Context context = this;
+        MediaPlayerMusic.Init(context);
+
+        Bundle arguments1 = getIntent().getExtras();
+
+        if(arguments1!=null) {
+            bmute = arguments1.getBoolean("mute");
+        }
+
+
 
 
         switchMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                UpdateData();
+
                 if(isChecked==true) {
-                    mediaPlayerMusic.setMusicMute(true);
+                    MediaPlayerMusic.onPause();
+                    bmute=true;
+                    MediaPlayerMusic.onResume();
 
                 }
                 else
                 {
-                    mediaPlayerMusic.setMusicMute(false);
-                    mediaPlayerMusic.MusicStop();
+                    bmute=false;
+                    MediaPlayerMusic.onPause();
+
+
                 }
             }
         });
@@ -49,42 +59,33 @@ boolean bmute;
 
     }
 
-    public void LoadData()
-    {
 
-
-        //обновление данных в классе
-        Bundle arguments = getIntent().getExtras();
-        MediaPlayerMusic mediaPlayerMusic;
-        mediaPlayerMusic = (MediaPlayerMusic) arguments.getSerializable(MediaPlayerMusic.class.getSimpleName());
-
-        bmute= mediaPlayerMusic.getMusicMute();
-    }
-
-    public void UpdateData() {
-        //обновление данных в классе
-        Bundle arguments = getIntent().getExtras();
-        MediaPlayerMusic mediaPlayerMusic;
-        mediaPlayerMusic = (MediaPlayerMusic) arguments.getSerializable(MediaPlayerMusic.class.getSimpleName());
-        mediaPlayerMusic.setMusicMute(bmute);
-    }
 
 
 
     public void ReturnMain(View view)
     {
-        UpdateData();
+
         //создание экземпляра класса
         Intent intent = new Intent(MainActivitySettings.this, MainActivity.class);
+        intent.putExtra("mute", bmute);
         startActivity(intent);
     }
 
     protected void onResume() {
         super.onResume();
         Switch switchMusic = (Switch) findViewById(R.id.switch1);
-        final MediaPlayerMusic mediaPlayerMusic = new MediaPlayerMusic(true);
-        switchMusic.setChecked(mediaPlayerMusic.getMusicMute());
+        switchMusic.setChecked(bmute);
+        if (bmute) {
+           // MediaPlayerMusic.onResume();
+        }
 
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        //MediaPlayerMusic.onPause();
     }
 
 }
