@@ -1,5 +1,6 @@
 package com.example.gojawin01;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -14,6 +15,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +43,26 @@ public class MainActivityBuy extends AppCompatActivity {
 
     public TextView lvlClick; // показ уровня клика
     public TextView lvlTime; // показ цены тайма
-    boolean bmute;
+    boolean BoolMute;
 
-public  void Pered()//передача переменных
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_buy);
+        price = (TextView) findViewById(R.id.Price);
+        priceTime = (TextView) findViewById(R.id.PriceTime);
+        countView = (TextView)findViewById(R.id.CountView);
+        lvlClick = (TextView) findViewById(R.id.lvlClickText);
+        lvlTime = (TextView)findViewById(R.id.lvlTimeText);
+        //передача переменных
+        Pered();
+        LoadData();
+    }
+
+
+    public  void Pered()//передача переменных
 {
     Bundle arguments = getIntent().getExtras();
     BuyUp buyUp;
@@ -54,8 +74,9 @@ public  void Pered()//передача переменных
     boostUpTime = buyUp.getBoostUpTimeCl();
     lvlUpTime = buyUp.getLvlUpTimeCl();
     timerBool = buyUp.getTimerBoolCl();
-    bmute = arguments.getBoolean("mute");
-        if(bmute) {
+    //включение плеера
+    BoolMute = arguments.getBoolean("mute");
+        if(BoolMute) {
             MediaPlayerMusic.onResume();
         }
 
@@ -72,7 +93,13 @@ public  void Pered()//передача переменных
         lvlTime.setText("lvl= "+ lvlUpTime);
         if (timerBool){
             Button b = (Button) findViewById(R.id.btnTimer);
-            b.setVisibility(View.INVISIBLE);
+            b.setClickable(false);
+            b.setBackgroundResource(R.drawable.button_unclick);
+        }
+        else {
+            Button b = (Button) findViewById(R.id.btnBoosterTime);
+            b.setClickable(false);
+            b.setBackgroundResource(R.drawable.button_unclick);
         }
     }
 
@@ -89,27 +116,8 @@ public  void Pered()//передача переменных
         buyUp.setBoostUpTimeCl(boostUpTime);
         buyUp.setLvlUpTimeCl(lvlUpTime);
         buyUp.seTimerBoolCl(timerBool);
-
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_buy);
-
-        price = (TextView) findViewById(R.id.Price);
-        priceTime = (TextView) findViewById(R.id.PriceTime);
-        countView = (TextView)findViewById(R.id.CountView);
-
-        lvlClick = (TextView) findViewById(R.id.lvlClickText);
-        lvlTime = (TextView)findViewById(R.id.lvlTimeText);
-
-        //передача переменных
-        Pered();
-        LoadData();
-
-    }
 
     @Override
     protected void onStart() {
@@ -135,11 +143,10 @@ public  void Pered()//передача переменных
         //создание экземпляра класса
         Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
         BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,timerBool);
+        //заполнение данными
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
-        intent.putExtra("mute", bmute);
-
+        intent.putExtra("mute", BoolMute);
         UpdateData();
-
         //старт окна
         startActivity(intent);
     }
@@ -151,29 +158,31 @@ public  void Pered()//передача переменных
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void startTimerBuy(View view){
         Toast toastTimer = Toast.makeText(this, "Нужно накопить 500 очков", Toast.LENGTH_LONG);
         if (mCount>= boostUpTime) {
             mCount =mCount- boostUpTime;
             timerBool = true;
+            //настройка кнопок
             Button b = (Button) findViewById(R.id.btnTimer);
-            b.setVisibility(View.INVISIBLE);
+            b.setClickable(false);
+            b.setBackgroundResource(R.drawable.button_unclick);
+            Button s = (Button) findViewById(R.id.btnBoosterTime);
+            s.setClickable(true);
+            s.setBackgroundResource(R.drawable.button_states);
+            //вывод уведомления
+            showNotification("Достижение","Куплен пассивный доход\uD83D\uDC7D");
         }
         else
         {
             toastTimer.show();
         }
+        Button booster = (Button) findViewById(R.id.btnTimer);
+        AnimUp(booster);
         UpdateData();
         LoadData();
     }
-
-
-
-
-
-
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public <string> void showNotification(string strContentTitle,string strContentText){
@@ -208,8 +217,6 @@ public  void Pered()//передача переменных
         notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
     }
 
-
-
     //прокачка клика вывод обновленных результатов
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -220,16 +227,36 @@ public  void Pered()//передача переменных
             mCount = mCount - boostUp;
             boostUp = boostUp *4;
             price.setText(Integer.toString(boostUp));
+
+            //получение достижений
+            if (lvlUpOne==16) {
+                showNotification("Достижение получено!", "Куплено х16 улучшений клика");
+            }
+            if (lvlUpOne==128) {
+                showNotification("Достижение получено!","Куплено х128 улучшений клика");
+            }
+
         }
         else
         {
             Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
             toast.show();
         }
+        Button booster = (Button) findViewById(R.id.Booster);
+        AnimUp(booster);
         //обновление данных в классе
         UpdateData();
         LoadData();
     }
+
+    public void AnimUp(Button b)
+    {
+        final Animation animation =  AnimationUtils.loadAnimation(this, R.anim.bounce);
+        BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+        animation.setInterpolator(interpolator);
+        b.setAnimation(animation);
+    }
+
 
 
 
@@ -242,10 +269,10 @@ public  void Pered()//передача переменных
             mCount = mCount - boostUpTime;
             boostUpTime = boostUpTime * 6;
 
+            //получение достижений
             if (lvlUpTime==10) {
                 showNotification("Достижение получено!", "Куплено 10 улучшений клика");
             }
-
             if (lvlUpTime==20) {
                 showNotification("Достижение получено!","Куплено 20 улучшений клика");
             }
@@ -257,6 +284,8 @@ public  void Pered()//передача переменных
             toast.show();
         }
         //обновление данных в классе
+        Button boosterTime = (Button) findViewById(R.id.btnBoosterTime);
+        AnimUp(boosterTime);
         UpdateData();
         LoadData();
 

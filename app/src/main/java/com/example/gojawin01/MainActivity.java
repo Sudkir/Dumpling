@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     // Идентификатор канала
     private static String CHANNEL_ID = "CHANNEL_ID";
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         //спрятать заголовок
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         timerTextView = (TextView) findViewById(R.id.timerTxt);
 
@@ -194,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
             bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
 
         }
-
         //mute
         if (mSettings.contains(APP_PREFERENCES_MUTE)) {
             muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
@@ -259,18 +260,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-        if (bol)
-        {
+        if (bol) {
             //зануление счётчика
             timerHandler.removeCallbacks(timerRunnable);
             //старт таймера
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
         }
-
-
-
 
         Bundle arguments1 = getIntent().getExtras();
 
@@ -280,9 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 MediaPlayerMusic.onResume();
             }
         }
-
     }
-
 
     protected void onResume()
 {
@@ -371,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void SettingsBtn(View v){
-        showNotification("228","\uD83D\uDC7D");
         Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
         intent.putExtra("mute", muteBool);
         startActivity(intent);

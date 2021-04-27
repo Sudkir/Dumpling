@@ -8,14 +8,14 @@
 
     <TextView
         android:id="@+id/CountView"
-        android:layout_width="205dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="343dp"
+        android:layout_height="47dp"
         android:text="TextView"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/exitBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exitBtn" />
 
     <Button
         android:id="@+id/exitBtn"
@@ -31,19 +31,17 @@
         android:id="@+id/Booster"
         android:layout_width="130dp"
         android:layout_height="55dp"
-        android:layout_marginTop="152dp"
         android:background="@drawable/button_states"
         android:onClick="Booster"
-        android:text="Прокачать Tic"
+        android:text="Улучшить клик"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/CountView" />
 
     <TextView
         android:id="@+id/Price"
         style="@style/Widget.AppCompat.TextView"
         android:layout_width="125dp"
         android:layout_height="30dp"
-        android:layout_marginTop="108dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#4CAF50"
@@ -60,7 +58,6 @@
         style="@style/Widget.AppCompat.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
         android:background="#4CAF50"
         android:text="Купить за"
         android:textColor="@android:color/primary_text_light"
@@ -79,8 +76,9 @@
 
         android:layout_marginTop="76dp"
         android:background="@drawable/button_states"
+        android:clickable="false"
         android:onClick="BoosterTime"
-        android:text="прокачать etc/sec"
+        android:text="Улучшить Авто Клик"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Booster" />
 
@@ -136,10 +134,11 @@
 
     <Button
         android:id="@+id/btnTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
+        android:background="@drawable/button_states"
         android:onClick="startTimerBuy"
-        android:text="Button"
+        android:text="Авто Клик"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
