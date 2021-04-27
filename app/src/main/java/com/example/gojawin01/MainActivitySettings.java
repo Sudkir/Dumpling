@@ -32,18 +32,18 @@ boolean bmute = true;
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setOnTouchListener(new OnSwipeTouchListener(context) {
             public void onSwipeTop() {
-                Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
+
             }
             public void onSwipeRight() {
-                Toast.makeText(context, "right", Toast.LENGTH_SHORT).show();
+
             }
             public void onSwipeLeft() {
-                Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
+
                 Return();
 
             }
             public void onSwipeBottom() {
-                Toast.makeText(context, "bottom", Toast.LENGTH_SHORT).show();
+
             }
 
         });

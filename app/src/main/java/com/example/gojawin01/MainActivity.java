@@ -1,13 +1,6 @@
 package com.example.gojawin01;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,33 +8,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
-import android.renderscript.RenderScript;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Map;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 //класс для анимации
 class BounceInterpolator implements android.view.animation.Interpolator {
-    private double mAmplitude;
-    private double mFrequency;
+    //add final
+    private final double mAmplitude;
+    private final double mFrequency;
 
     BounceInterpolator(double amplitude, double frequency) {
         mAmplitude = amplitude;
@@ -79,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint({"SetTextI18n", "DefaultLocale"})
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
@@ -121,33 +109,40 @@ public class MainActivity extends AppCompatActivity {
     private static String CHANNEL_ID = "CHANNEL_ID";
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //уведомление менеджер
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
         setContentView(R.layout.activity_main);
         //спрятать заголовок
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-        timerTextView = (TextView) findViewById(R.id.timerTxt);
-
-
-        mShowCount = (TextView) findViewById(R.id.textView);
+        timerTextView = findViewById(R.id.timerTxt);
+        mShowCount = findViewById(R.id.textView);
         mCount =0;
         mShowCount.setText(Integer.toString(mCount));
-        price = (TextView) findViewById(R.id.Price);
-
+        price = findViewById(R.id.Price);
         //сейв переменных
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        final Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
-        final Toast toastTimer = Toast.makeText(this, "Нужно накопить 500 очков", Toast.LENGTH_LONG);
-
-        //Кнопка покупки
-        //b.setOnClickListener(new View.OnClickListener() {});
-
+        //обраобтка свайпов на фоне
+        final Context context = this;
+        ImageView imageView = findViewById(R.id.imageViewBack);
+        imageView.setOnTouchListener(new OnSwipeTouchListener(context) {
+            public void onSwipeTop() {
+            }
+            @SuppressLint("ClickableViewAccessibility")
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onSwipeRight() {
+                ActivitySettingsShow();
+            }
+            public void onSwipeLeft() {
+                ActivityBuyShow();
+            }
+            public void onSwipeBottom() {
+            }
+        });
     }
 
     protected void onPause() {
@@ -196,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
             bol = mSettings.getBoolean(APP_PREFERENCES_BOOL, false);
 
         }
+
         //mute
         if (mSettings.contains(APP_PREFERENCES_MUTE)) {
             muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
@@ -238,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public void ResemeAll()
     {
         //принятие данных из второй формы через класс BuyUp
@@ -260,13 +257,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        if (bol) {
+
+        if (bol)
+        {
             //зануление счётчика
             timerHandler.removeCallbacks(timerRunnable);
             //старт таймера
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
         }
+
+
+
 
         Bundle arguments1 = getIntent().getExtras();
 
@@ -276,10 +278,11 @@ public class MainActivity extends AppCompatActivity {
                 MediaPlayerMusic.onResume();
             }
         }
+
     }
 
-    protected void onResume()
-{
+
+    protected void onResume() {
     super.onResume();
 
     AnimDollar();
@@ -289,8 +292,6 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public <string> void showNotification(string strContentTitle,string strContentText){
-
-
 
         //создание канала
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -321,13 +322,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
     public void AnimImageBtn(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
         final Animation animation =  AnimationUtils.loadAnimation(this, R.anim.bounce);
@@ -341,49 +335,37 @@ public class MainActivity extends AppCompatActivity {
             mShowCount.setText(Integer.toString(mCount));
     }
 
-    // новая игра на кнопку
-    public void showToast(View view) {
-
-        Toast toast = Toast.makeText(this, R.string.toast_message, Toast.LENGTH_LONG);
-        toast.show();
-
-        Button b = (Button) view;
-
-        boostUp = 10; //цена прокачки тика
-        mCount = 0; //общее количесво очков
-        lvlUpOne = 1; // уровень прокачки
-        //boostUpTime = 500;
-        lvlUpTime = 1; // уровень прокачки
-
-        b.setVisibility(View.VISIBLE);
-        mShowCount.setText(Integer.toString(mCount));
-    }
-
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-
-
-    public void SettingsBtn(View v){
+    private void ActivitySettingsShow()
+    {
+        //showNotification("228","\uD83D\uDC7D");
         Intent intent = new Intent(MainActivity.this, MainActivitySettings.class);
         intent.putExtra("mute", muteBool);
         startActivity(intent);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void ActivitySettingsShowV(View v){
+        ActivitySettingsShow();
     }
 
 
 
     //работа с окном прокачки
-    //static final private int CHOOSE_THIEF = 0;// параметр RequestCode
-    public void HertBuy(View view) {//кнопка перехода на новую активность
-        Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
 
+    private void ActivityBuyShow()
+    {
+        Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
         //работа с классом BuyUp создание экземпляра класса
         BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         intent.putExtra("mute", muteBool);
         //старт окна
         startActivityForResult(intent, CHOOSE_THIEF);
-
+    }
+    public void ActivityBuyShowV(View view) {
+        ActivityBuyShow();
     }
 
 

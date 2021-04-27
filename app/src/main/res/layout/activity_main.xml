@@ -21,6 +21,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.044" />
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/moneyback"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 
     <TextView
@@ -86,7 +98,7 @@
         android:layout_width="126dp"
         android:layout_height="60dp"
         android:background="@drawable/button_states"
-        android:onClick="HertBuy"
+        android:onClick="ActivityBuyShowV"
         android:text="прокачка"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -96,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_states"
-        android:onClick="SettingsBtn"
+        android:onClick="ActivitySettingsShowV"
         android:text="настройки"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

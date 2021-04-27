@@ -1,10 +1,5 @@
 package com.example.gojawin01;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,8 +13,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 public class MainActivityBuy extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivityBuy extends AppCompatActivity {
     private static final int NOTIFY_ID = 228;
 
     // Идентификатор канала
-    private static String CHANNEL_ID = "Goja channel";
+    private static final String CHANNEL_ID = "Goja channel";
 
     public int boostUp = 10; //цена прокачки тика
     public int mCount =0; //общее количесво очков
@@ -47,18 +47,44 @@ public class MainActivityBuy extends AppCompatActivity {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_buy);
-        price = (TextView) findViewById(R.id.Price);
-        priceTime = (TextView) findViewById(R.id.PriceTime);
-        countView = (TextView)findViewById(R.id.CountView);
-        lvlClick = (TextView) findViewById(R.id.lvlClickText);
-        lvlTime = (TextView)findViewById(R.id.lvlTimeText);
+        price = findViewById(R.id.Price);
+        priceTime = findViewById(R.id.PriceTime);
+        countView = findViewById(R.id.CountView);
+        lvlClick = findViewById(R.id.lvlClickText);
+        lvlTime = findViewById(R.id.lvlTimeText);
         //передача переменных
         Pered();
         LoadData();
+
+
+        //обраобтка свайпов на фоне
+        final Context context = this;
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setOnTouchListener(new OnSwipeTouchListener(context) {
+            public void onSwipeTop() {
+
+            }
+            @SuppressLint("ClickableViewAccessibility")
+            public void onSwipeRight() {
+                Return();
+            }
+
+            public void onSwipeLeft() {
+
+
+
+            }
+            public void onSwipeBottom() {
+
+            }
+
+        });
+
     }
 
 
@@ -83,7 +109,7 @@ public class MainActivityBuy extends AppCompatActivity {
 
 }
 
-    @SuppressLint("SetTextI18n")
+
     public void LoadData()
     {
         countView.setText(Integer.toString(mCount));
@@ -92,12 +118,12 @@ public class MainActivityBuy extends AppCompatActivity {
         lvlClick.setText("boost= "+ lvlUpOne);
         lvlTime.setText("lvl= "+ lvlUpTime);
         if (timerBool){
-            Button b = (Button) findViewById(R.id.btnTimer);
+            Button b = findViewById(R.id.btnTimer);
             b.setClickable(false);
             b.setBackgroundResource(R.drawable.button_unclick);
         }
         else {
-            Button b = (Button) findViewById(R.id.btnBoosterTime);
+            Button b = findViewById(R.id.btnBoosterTime);
             b.setClickable(false);
             b.setBackgroundResource(R.drawable.button_unclick);
         }
@@ -138,8 +164,7 @@ public class MainActivityBuy extends AppCompatActivity {
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
     public final static String THIEF = "com.example.gojawin01.THIEF";
 
-    public void ReturnMain(View view)
-    {
+    public void  Return(){
         //создание экземпляра класса
         Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
         BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,timerBool);
@@ -149,6 +174,11 @@ public class MainActivityBuy extends AppCompatActivity {
         UpdateData();
         //старт окна
         startActivity(intent);
+    }
+
+    public void ReturnMain(View view)
+    {
+        Return();
     }
     protected void onPause() {
         super.onPause();
@@ -165,10 +195,10 @@ public class MainActivityBuy extends AppCompatActivity {
             mCount =mCount- boostUpTime;
             timerBool = true;
             //настройка кнопок
-            Button b = (Button) findViewById(R.id.btnTimer);
+            Button b = findViewById(R.id.btnTimer);
             b.setClickable(false);
             b.setBackgroundResource(R.drawable.button_unclick);
-            Button s = (Button) findViewById(R.id.btnBoosterTime);
+            Button s = findViewById(R.id.btnBoosterTime);
             s.setClickable(true);
             s.setBackgroundResource(R.drawable.button_states);
             //вывод уведомления
@@ -178,7 +208,7 @@ public class MainActivityBuy extends AppCompatActivity {
         {
             toastTimer.show();
         }
-        Button booster = (Button) findViewById(R.id.btnTimer);
+        @SuppressLint("CutPasteId") Button booster = findViewById(R.id.btnTimer);
         AnimUp(booster);
         UpdateData();
         LoadData();
@@ -242,7 +272,7 @@ public class MainActivityBuy extends AppCompatActivity {
             Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
             toast.show();
         }
-        Button booster = (Button) findViewById(R.id.Booster);
+        Button booster = findViewById(R.id.Booster);
         AnimUp(booster);
         //обновление данных в классе
         UpdateData();
@@ -284,7 +314,7 @@ public class MainActivityBuy extends AppCompatActivity {
             toast.show();
         }
         //обновление данных в классе
-        Button boosterTime = (Button) findViewById(R.id.btnBoosterTime);
+        Button boosterTime = findViewById(R.id.btnBoosterTime);
         AnimUp(boosterTime);
         UpdateData();
         LoadData();
