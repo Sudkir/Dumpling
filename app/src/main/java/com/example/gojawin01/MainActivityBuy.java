@@ -110,6 +110,7 @@ public class MainActivityBuy extends AppCompatActivity {
 }
 
 
+    @SuppressLint("SetTextI18n")
     public void LoadData()
     {
         countView.setText(Integer.toString(mCount));
@@ -117,16 +118,11 @@ public class MainActivityBuy extends AppCompatActivity {
         price.setText(Integer.toString(boostUp));
         lvlClick.setText("boost= "+ lvlUpOne);
         lvlTime.setText("lvl= "+ lvlUpTime);
-        if (timerBool){
-            Button b = findViewById(R.id.btnTimer);
-            b.setClickable(false);
-            b.setBackgroundResource(R.drawable.button_unclick);
-        }
-        else {
-            Button b = findViewById(R.id.btnBoosterTime);
-            b.setClickable(false);
-            b.setBackgroundResource(R.drawable.button_unclick);
-        }
+        Button b;
+        if (timerBool) b = findViewById(R.id.btnTimer);
+        else b = findViewById(R.id.btnBoosterTime);
+        b.setClickable(false);
+        b.setBackgroundResource(R.drawable.button_unclick);
     }
 
 
@@ -161,8 +157,8 @@ public class MainActivityBuy extends AppCompatActivity {
 
     }
 
-    static final private int CHOOSE_THIEF = 0;// параметр RequestCode
-    public final static String THIEF = "com.example.gojawin01.THIEF";
+    //static final private int CHOOSE_THIEF = 0;// параметр RequestCode
+    //public final static String THIEF = "com.example.gojawin01.THIEF";
 
     public void  Return(){
         //создание экземпляра класса

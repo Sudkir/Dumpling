@@ -72,26 +72,16 @@
         android:visibility="invisible"
         tools:layout_editor_absoluteX="4dp"
         tools:layout_editor_absoluteY="7dp"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/screen_background_light" />
+        app:srcCompat="@android:drawable/screen_background_light"
+        tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/btnShow"
-        android:layout_width="99dp"
-        android:layout_height="36dp"
-        android:background="@drawable/button_states"
-        android:onClick="showToast"
-        android:text="Restart"
-        android:textSize="12sp"
-
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="115dp" />
 
     <Button
         android:id="@+id/button"

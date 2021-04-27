@@ -29,7 +29,8 @@
         android:linksClickable="false"
         android:text="Звук"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exitBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/exitBtn"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
         android:id="@+id/exitBtn"

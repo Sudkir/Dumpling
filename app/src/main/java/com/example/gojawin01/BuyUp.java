@@ -1,5 +1,4 @@
 package com.example.gojawin01;
-import android.widget.TextView;
 
 import java.io.Serializable;
 

@@ -9,9 +9,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivitySettings extends Activity {
 
@@ -48,11 +45,11 @@ boolean bmute = true;
 
         });
         //обработка вкл.выкл музыки
-        Switch switchMusic = (Switch) findViewById(R.id.switch1);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMusic = findViewById(R.id.switch1);
         switchMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked==true ) {
+                if(isChecked) {
                     MediaPlayerMusic.onPause();
                     bmute=true;
                     MediaPlayerMusic.onResume();
@@ -65,7 +62,7 @@ boolean bmute = true;
             }
         });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchBar = (Switch) findViewById(R.id.SwitchBar);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchBar = findViewById(R.id.SwitchBar);
         switchBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -93,7 +90,7 @@ boolean bmute = true;
 
 public void Starting()
 {
-    Switch switchMusic = (Switch) findViewById(R.id.switch1);
+    @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMusic = findViewById(R.id.switch1);
     Bundle arguments1 = getIntent().getExtras();
     if(arguments1!=null) {
         bmute = arguments1.getBoolean("mute");
