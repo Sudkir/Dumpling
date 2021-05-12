@@ -168,22 +168,30 @@ public class MainActivity extends AppCompatActivity {
         //прокачка клика
         if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
             String value=  mSettings.getString(APP_PREFERENCES_PRICESCORE, "");
-            boostUp=Integer.parseInt(value);
+            if (value != null) {
+                boostUp=Integer.parseInt(value);
+            }
         }
         //прокачка таймера
         if (mSettings.contains(APP_PREFERENCES_UPTIME)) {
             String value= mSettings.getString(APP_PREFERENCES_UPTIME, "");
-            lvlUpTime=Integer.parseInt(value);
+            if (value != null) {
+                lvlUpTime=Integer.parseInt(value);
+            }
         }
         //прокачка клика
         if (mSettings.contains(APP_PREFERENCES_UPONE)) {
             String value= mSettings.getString(APP_PREFERENCES_UPONE, "");
-            lvlUpOne=Integer.parseInt(value);
+            if (value != null) {
+                lvlUpOne=Integer.parseInt(value);
+            }
         }
         //цена прокачки таймера
         if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
             String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
-            boostUpTime=Integer.parseInt(value);
+            if (value != null) {
+                boostUpTime=Integer.parseInt(value);
+            }
             //priceTime.setText(Integer.toString(boostUpTime));
         }
         //таймер
@@ -195,9 +203,7 @@ public class MainActivity extends AppCompatActivity {
         //mute
         if (mSettings.contains(APP_PREFERENCES_MUTE)) {
             muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
-            if (muteBool){
-                //старт музыки
-            }
+            //if (muteBool){}
 
         }
     }
@@ -322,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public void AnimImageBtn(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
         final Animation animation =  AnimationUtils.loadAnimation(this, R.anim.bounce);

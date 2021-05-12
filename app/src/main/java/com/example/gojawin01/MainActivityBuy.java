@@ -23,7 +23,7 @@ import androidx.core.app.NotificationCompat;
 
 public class MainActivityBuy extends AppCompatActivity {
 
-
+//assert add
     // Идентификатор уведомления
     private static final int NOTIFY_ID = 228;
 
@@ -92,8 +92,10 @@ public class MainActivityBuy extends AppCompatActivity {
 {
     Bundle arguments = getIntent().getExtras();
     BuyUp buyUp;
+    assert arguments != null;
     buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
     //передача переменных
+    assert buyUp != null;
     boostUp = buyUp.getBoostUpCl();
     mCount = buyUp.getMCount();
     lvlUpOne = buyUp.getLvlUpOneCl();
@@ -131,7 +133,9 @@ public class MainActivityBuy extends AppCompatActivity {
         //обновление данных в классе
         Bundle arguments = getIntent().getExtras();
         BuyUp buyUp;
+        assert arguments != null;
         buyUp = (BuyUp) arguments.getSerializable(BuyUp.class.getSimpleName());
+        assert buyUp != null;
         buyUp.setBoostUpCl(boostUp);
         buyUp.setMCount(mCount);
         buyUp.setLvlUpOneCl(lvlUpOne);
