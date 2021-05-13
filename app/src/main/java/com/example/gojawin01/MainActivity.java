@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -391,5 +392,8 @@ public class MainActivity extends AppCompatActivity {
         animation.setInterpolator(interpolator);
         imageButton.setAnimation(animationImage);
     }
-
+    public void Share(View v)
+    {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/sudkir")));
+    }
 }

@@ -21,6 +21,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Objects;
+
 public class MainActivityBuy extends AppCompatActivity {
 
 //assert add
@@ -47,10 +49,13 @@ public class MainActivityBuy extends AppCompatActivity {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //спрятать заголовок
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main_buy);
         price = findViewById(R.id.Price);
         priceTime = findViewById(R.id.PriceTime);

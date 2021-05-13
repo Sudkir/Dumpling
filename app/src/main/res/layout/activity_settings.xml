@@ -9,15 +9,17 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/moneyback"
+        android:src="@drawable/subback"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
 
     <Switch
@@ -59,5 +61,6 @@
         android:text="Switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
