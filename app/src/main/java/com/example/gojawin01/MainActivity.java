@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         //сейв переменных
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
+
+
         //обраобтка свайпов на фоне
         final Context context = this;
         ImageView imageView = findViewById(R.id.imageViewBack);
@@ -157,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         //onCreate->onStart->onResume
+
+        //музыка
+        MediaPlayerMusic.Init(this);
 
         //количествао очков
         if (mSettings.contains(APP_PREFERENCES_SCORE)) {
@@ -204,7 +209,9 @@ public class MainActivity extends AppCompatActivity {
         //mute
         if (mSettings.contains(APP_PREFERENCES_MUTE)) {
             muteBool = mSettings.getBoolean(APP_PREFERENCES_MUTE, true);
-            //if (muteBool){}
+            if (muteBool){
+                MediaPlayerMusic.onResume();
+            }
 
         }
     }
@@ -234,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean(APP_PREFERENCES_BOOL, boolTimer);
         editor.apply();
 
-
-        editor.putBoolean(APP_PREFERENCES_MUTE, muteBool);
+        boolean boolMute = muteBool;
+        editor.putBoolean(APP_PREFERENCES_MUTE, boolMute);
         editor.apply();
 
     }
@@ -331,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     public void AnimImageBtn(View view) {
+        MediaPlayerMusic.onResumeFood();
         ImageButton imageButton = findViewById(R.id.imageButton);
         final Animation animation =  AnimationUtils.loadAnimation(this, R.anim.bounce);
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
@@ -341,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
         mCount = mCount + lvlUpOne;
         if (mShowCount != null)
             mShowCount.setText(Integer.toString(mCount));
+        //MediaPlayerMusic.onPauseFood();
     }
 
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode

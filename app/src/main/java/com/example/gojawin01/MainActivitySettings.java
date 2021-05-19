@@ -94,14 +94,15 @@ boolean bmute = true;
 public void Starting()
 {
     @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMusic = findViewById(R.id.switch1);
-    Bundle arguments1 = getIntent().getExtras();
-    if(arguments1!=null) {
-        bmute = arguments1.getBoolean("mute");
+    Bundle arguments = getIntent().getExtras();
+    if(arguments!=null) {
+        bmute = arguments.getBoolean("mute");
         if(bmute) {
             MediaPlayerMusic.onResume();
+            switchMusic.setChecked(true);
         }
     }
-    switchMusic.setChecked(bmute);
+
 }
 
 
@@ -113,6 +114,8 @@ public void Starting()
         Return();
 
     }
+
+
 
 
 
