@@ -40,7 +40,6 @@ boolean bmute = true;
             public void onSwipeLeft() {
 
                 Return();
-
             }
             public void onSwipeBottom() {
 
