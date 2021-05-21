@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageViewBack"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="fitXY"
         android:src="@drawable/backtable"
         android:visibility="visible"
@@ -38,14 +38,14 @@
     <ImageButton
         android:id="@+id/imageButton"
         style="@android:style/Widget.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="250dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:background="@null"
         android:onClick="AnimImageBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@drawable/ic_pelmen"
         tools:ignore="VectorDrawableCompat" />
 
