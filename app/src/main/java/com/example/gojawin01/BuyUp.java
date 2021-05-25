@@ -6,7 +6,8 @@ public class BuyUp implements Serializable {
 
     public int boostUpCl; //цена прокачки тика
     public int mCountCl; //общее количесво очков
-    public int lvlUpOneCl; // уровень прокачки
+    public int clickUp; // коэф прокачки
+    public int clickLvl; // уровень прокачки
     public int boostUpTimeCl;
 
     public int lvlUpTimeCl; // уровень прокачки
@@ -14,10 +15,11 @@ public class BuyUp implements Serializable {
 
 
     //конструктор класса
-    public BuyUp(int boostUpCl, int mCountCl, int lvlUpOneCl, int boostUpTimeCl,int lvlUpTimeCl,boolean timerBoolCl){
+    public BuyUp(int boostUpCl, int mCountCl, int clickUp, int boostUpTimeCl, int lvlUpTimeCl, boolean timerBoolCl, int clickLvl){
         this.boostUpCl = boostUpCl;
         this.mCountCl = mCountCl;
-        this.lvlUpOneCl = lvlUpOneCl;
+        this.clickUp = clickUp;
+        this.clickLvl = clickLvl;
         this.boostUpTimeCl = boostUpTimeCl;
         this.lvlUpTimeCl = lvlUpTimeCl;
         this.timerBoolCl = timerBoolCl;
@@ -42,12 +44,20 @@ public class BuyUp implements Serializable {
         this.mCountCl = mCount;
     }
 
-    public int getLvlUpOneCl() {
-        return lvlUpOneCl;
+    public int getClickUp() {
+        return clickUp;
     }
 
-    public void setLvlUpOneCl(int lvlUpOneCl) {
-        this.lvlUpOneCl = lvlUpOneCl;
+    public void setClickUp(int clickUp) {
+        this.clickUp = clickUp;
+    }
+
+    public int getClickLvl() {
+        return clickLvl;
+    }
+
+    public void setClickLvl(int clickLvl) {
+        this.clickLvl = clickLvl;
     }
 
     public int getBoostUpTimeCl() {

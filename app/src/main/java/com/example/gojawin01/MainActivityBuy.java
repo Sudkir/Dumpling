@@ -34,10 +34,14 @@ public class MainActivityBuy extends AppCompatActivity {
 
     public int boostUp = 10; //цена прокачки тика
     public int mCount =0; //общее количесво очков
-    public int lvlUpOne = 1; // уровень прокачки
+    public int ClickUp = 1; // уровень прокачки
     public int boostUpTime =500;//цена прокачки тайма
     public int lvlUpTime = 1; // уровень прокачки
+    public int ClickLvl = 1; // уровень прокачки
     boolean timerBool ;
+    public String strUp = "Прокачать клик до ";
+    public Button btnbooster;
+    public Button btnboosterTime;
 
     public TextView price; // показ цены клика
     public TextView priceTime; // показ цены тайма
@@ -57,13 +61,14 @@ public class MainActivityBuy extends AppCompatActivity {
         //спрятать заголовок
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main_buy);
+        btnbooster =findViewById(R.id.btnBooster);
+        btnboosterTime =findViewById(R.id.btnBoosterTime);
         price = findViewById(R.id.Price);
         priceTime = findViewById(R.id.PriceTime);
         countView = findViewById(R.id.CountView);
-        lvlClick = findViewById(R.id.lvlClickText);
-        lvlTime = findViewById(R.id.lvlTimeText);
+
         //передача переменных
-        Pered();
+        Send();
         LoadData();
 
 
@@ -93,7 +98,7 @@ public class MainActivityBuy extends AppCompatActivity {
     }
 
 
-    public  void Pered()//передача переменных
+    public  void Send()//передача переменных
 {
     Bundle arguments = getIntent().getExtras();
     BuyUp buyUp;
@@ -103,10 +108,11 @@ public class MainActivityBuy extends AppCompatActivity {
     assert buyUp != null;
     boostUp = buyUp.getBoostUpCl();
     mCount = buyUp.getMCount();
-    lvlUpOne = buyUp.getLvlUpOneCl();
+    ClickUp = buyUp.getClickUp();
     boostUpTime = buyUp.getBoostUpTimeCl();
     lvlUpTime = buyUp.getLvlUpTimeCl();
     timerBool = buyUp.getTimerBoolCl();
+    ClickLvl = buyUp.getClickLvl();
     //включение плеера
     BoolMute = arguments.getBoolean("mute");
         if(BoolMute) {
@@ -123,8 +129,8 @@ public class MainActivityBuy extends AppCompatActivity {
         countView.setText(Integer.toString(mCount));
         priceTime.setText(Integer.toString(boostUpTime));
         price.setText(Integer.toString(boostUp));
-        lvlClick.setText("boost= "+ lvlUpOne);
-        lvlTime.setText("lvl= "+ lvlUpTime);
+        btnbooster.setText(strUp+ ClickLvl);
+        btnboosterTime.setText(strUp+ lvlUpTime);
         Button b;
         if (timerBool) b = findViewById(R.id.btnTimer);
         else b = findViewById(R.id.btnBoosterTime);
@@ -143,10 +149,11 @@ public class MainActivityBuy extends AppCompatActivity {
         assert buyUp != null;
         buyUp.setBoostUpCl(boostUp);
         buyUp.setMCount(mCount);
-        buyUp.setLvlUpOneCl(lvlUpOne);
+        buyUp.setClickUp(ClickUp);
         buyUp.setBoostUpTimeCl(boostUpTime);
         buyUp.setLvlUpTimeCl(lvlUpTime);
         buyUp.seTimerBoolCl(timerBool);
+        buyUp.setClickLvl(ClickLvl);
     }
 
 
@@ -160,7 +167,7 @@ public class MainActivityBuy extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //передача переменных
-        Pered();
+        Send();
         LoadData();
 
 
@@ -172,7 +179,7 @@ public class MainActivityBuy extends AppCompatActivity {
     public void  Return(){
         //создание экземпляра класса
         Intent intent = new Intent(MainActivityBuy.this, MainActivity.class);
-        BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,timerBool);
+        BuyUp buyUp = new BuyUp(boostUp, mCount, ClickUp,boostUpTime,lvlUpTime,timerBool,ClickLvl);
         //заполнение данными
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         intent.putExtra("mute", BoolMute);
@@ -258,17 +265,36 @@ public class MainActivityBuy extends AppCompatActivity {
     public void Booster (View view){
 
         if (mCount>= boostUp) {
-            lvlUpOne = lvlUpOne * 2;
+            if (ClickLvl<10)
+            {
+                ClickUp = ClickUp+2;
+                Toast toast = Toast.makeText(this, "Клик увеличен на 2", Toast.LENGTH_LONG);
+                toast.show();
+            }
+            if (ClickLvl<20 &&ClickLvl>=10)
+            {
+                ClickUp = ClickUp+5;
+                Toast toast = Toast.makeText(this, "Клик увеличен на 5", Toast.LENGTH_LONG);
+            }
+            if (ClickLvl>=20)
+            {
+                Toast toast = Toast.makeText(this, "Клик увеличен на 10", Toast.LENGTH_LONG);
+                ClickUp = ClickUp+10;
+            }
+
+            ClickLvl++;
             mCount = mCount - boostUp;
-            boostUp = boostUp *4;
+            boostUp = boostUp *2;
+            //50 × 1.07² = 54,24 2=lvl 50=start price
             price.setText(Integer.toString(boostUp));
+            btnbooster.setText(strUp+ClickLvl);
 
             //получение достижений
-            if (lvlUpOne==16) {
-                showNotification("Достижение получено!", "Куплено х16 улучшений клика");
+            if (ClickLvl ==10) {
+                showNotification("Достижение получено!", "Куплено х10 улучшений клика");
             }
-            if (lvlUpOne==128) {
-                showNotification("Достижение получено!","Куплено х128 улучшений клика");
+            if (ClickLvl ==100) {
+                showNotification("Достижение получено!","Куплено х100 улучшений клика");
             }
 
         }
@@ -277,7 +303,7 @@ public class MainActivityBuy extends AppCompatActivity {
             Toast toast = Toast.makeText(this, R.string.boost_message, Toast.LENGTH_LONG);
             toast.show();
         }
-        Button booster = findViewById(R.id.Booster);
+        Button booster = findViewById(R.id.btnBooster);
         AnimUp(booster);
         //обновление данных в классе
         UpdateData();
@@ -296,11 +322,13 @@ public class MainActivityBuy extends AppCompatActivity {
 
 
     //прокачка таймера
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void BoosterTime (View view){
         //формула прокачки
         if (mCount>= boostUpTime) {
             lvlUpTime++;
+            btnbooster.setText(strUp+ (ClickLvl+1));
             mCount = mCount - boostUpTime;
             boostUpTime = boostUpTime * 6;
 

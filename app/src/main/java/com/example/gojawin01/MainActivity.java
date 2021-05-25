@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     public int boostUp = 10; //цена прокачки тика
     public int mCount =0; //общее количесво очков
-    public int lvlUpOne = 1; // уровень прокачки
+    public int lvlUpOne = 1; // клэф прокачки
+    public int lvlClick = 1; // уровень прокачки
     public int boostUpTime = 500;
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_BOOL = "Bool";
     public static final String APP_PREFERENCES_PRICETIME = "Time"; // прокачка таймера
     public static final String APP_PREFERENCES_PRICESCORE = "PriceScore"; //
-    public static final String APP_PREFERENCES_UPONE = "lvlUp"; //
+    public static final String APP_PREFERENCES_UPONE = "lvlUp"; //коэф прокачки
+    public static final String APP_PREFERENCES_CLICKLVL = "ClickLvL"; //уровень прокачки
     public static final String APP_PREFERENCES_MUTE = "Mute"; //мут музыки
 
 
@@ -192,6 +194,13 @@ public class MainActivity extends AppCompatActivity {
                 lvlUpOne=Integer.parseInt(value);
             }
         }
+        //уровень прокаяки
+        if (mSettings.contains(APP_PREFERENCES_CLICKLVL)) {
+            String value= mSettings.getString(APP_PREFERENCES_CLICKLVL, "");
+            if (value != null) {
+                lvlClick=Integer.parseInt(value);
+            }
+        }
         //цена прокачки таймера
         if (mSettings.contains(APP_PREFERENCES_PRICETIME)) {
             String value= mSettings.getString(APP_PREFERENCES_PRICETIME, "");
@@ -231,6 +240,9 @@ public class MainActivity extends AppCompatActivity {
         String strLvlUpOne = Integer.toString(lvlUpOne);
         editor.putString(APP_PREFERENCES_UPONE, strLvlUpOne);
 
+        String strLvlUpShow = Integer.toString(lvlClick);
+        editor.putString(APP_PREFERENCES_CLICKLVL, strLvlUpShow);
+
         String strPriceTime = Integer.toString(boostUpTime);
         editor.putString(APP_PREFERENCES_PRICETIME, strPriceTime);
 
@@ -263,7 +275,8 @@ public class MainActivity extends AppCompatActivity {
             if (buyUp != null) {
                 boostUp = buyUp.getBoostUpCl();
                 mCount = buyUp.getMCount();
-                lvlUpOne = buyUp.getLvlUpOneCl();
+                lvlUpOne = buyUp.getClickUp();
+                lvlClick = buyUp.getClickLvl();
                 mShowCount.setText(Integer.toString(mCount));
                 lvlUpTime = buyUp.getLvlUpTimeCl();
                 boostUpTime = buyUp.getBoostUpTimeCl();
@@ -375,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
         //работа с классом BuyUp создание экземпляра класса
-        BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol);
+        BuyUp buyUp = new BuyUp(boostUp, mCount, lvlUpOne,boostUpTime,lvlUpTime,bol,lvlClick);
         intent.putExtra(BuyUp.class.getSimpleName(), buyUp);
         intent.putExtra("mute", muteBool);
         //старт окна

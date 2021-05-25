@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/Booster"
+        android:id="@+id/btnBooster"
         android:layout_width="130dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
@@ -51,16 +51,6 @@
 
 
     <TextView
-        android:id="@+id/lvlTimeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:text="0"
-        android:textColor="@android:color/primary_text_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lvlClickText" />
-
-    <TextView
         android:id="@+id/textView6"
         style="@style/Widget.AppCompat.TextView"
         android:layout_width="wrap_content"
@@ -74,7 +64,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/Price"
         app:layout_constraintHorizontal_bias="0.424"
-        app:layout_constraintStart_toEndOf="@+id/Booster"
+        app:layout_constraintStart_toEndOf="@+id/btnBooster"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
@@ -112,16 +102,6 @@
         app:layout_constraintStart_toEndOf="@+id/btnTimer"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
-    <TextView
-        android:id="@+id/lvlClickText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:text="0"
-        android:textColor="@android:color/primary_text_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBoosterTime" />
-
     <Button
         android:id="@+id/btnBoosterTime"
         android:layout_width="131dp"
@@ -134,7 +114,7 @@
         android:text="Улучшить Авто Клик"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Booster"
+        app:layout_constraintTop_toBottomOf="@+id/btnBooster"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -152,7 +132,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/Booster"
+        app:layout_constraintStart_toEndOf="@+id/btnBooster"
         app:layout_constraintTop_toBottomOf="@+id/priceTi" />
 
     <TextView
