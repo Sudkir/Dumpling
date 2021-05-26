@@ -5,17 +5,22 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
+import java.util.Locale;
+
 public class MainActivitySettings extends Activity {
 
 boolean bmute = true;
+Button buttonBack;
 
 
 
@@ -27,6 +32,11 @@ boolean bmute = true;
         final Context context = this;
         MediaPlayerMusic.Init(context);
         Starting();//старт всего
+        UpLanguage();//установка языка
+
+
+
+
 
         //обраобтка свайпов на фоне
         ImageView imageView = findViewById(R.id.imageView);
@@ -80,6 +90,23 @@ boolean bmute = true;
     }
 
 
+    public void ReturnMain(View view) {
+        Return();
+    }
+
+    public void UpLanguage() {
+        buttonBack = findViewById(R.id.exitBtn);
+        buttonBack.setText(R.string.btn_back);
+
+        buttonBack = findViewById(R.id.btnRu);
+        buttonBack.setText(R.string.btn_ruLanguage);
+
+        buttonBack = findViewById(R.id.btnEn);
+        buttonBack.setText(R.string.btn_enLanguage);
+
+    }
+
+
 
     public void Return() {
     //создание экземпляра класса
@@ -89,6 +116,36 @@ boolean bmute = true;
     MediaPlayerMusic.onPause();
 
 }
+
+    public void enLangV(View view) {
+        enLang();
+    }
+    public void enLang() {
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration, null);
+// выводим английский текст на русской локали устройства
+        setTitle(R.string.app_name);
+        UpLanguage();
+    }
+
+
+
+    public void ruLangV(View view) {
+        ruLang();
+    }
+    public void ruLang() {
+        Locale locale = new Locale("ru");
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration, null);
+        setTitle(R.string.app_name);
+        UpLanguage();
+    }
+
 
 public void Starting()
 {
@@ -107,12 +164,7 @@ public void Starting()
 
 
 
-    public void ReturnMain(View view)
-    {
 
-        Return();
-
-    }
 
 
 

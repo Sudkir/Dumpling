@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,8 +63,11 @@ public class MainActivity extends AppCompatActivity {
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
     public TextView price; // показ цены клика
-    boolean bol = false;
-    boolean muteBool = true;
+    boolean bol = false;//таймер
+    boolean muteBool = true;//звук
+
+    Button buttonUp;//прокачки
+    Button buttonSet;//настройки
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -116,11 +120,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //уведомление менеджер
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         setContentView(R.layout.activity_main);
         //спрятать заголовок
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+
+
+        //установка языка по умолчанию
+        buttonSet = findViewById(R.id.btnSettings);
+        buttonSet.setText(R.string.btn_settings);
+
+        buttonUp = findViewById(R.id.btnUpgrade);
+        buttonUp.setText(R.string.btn_upgrade);
+
+
+
+
+
         timerTextView = findViewById(R.id.timerTxt);
         mShowCount = findViewById(R.id.textView);
         mCount =0;
@@ -128,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
         price = findViewById(R.id.Price);
         //сейв переменных
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-
 
         //обраобтка свайпов на фоне
         final Context context = this;

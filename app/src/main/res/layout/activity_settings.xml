@@ -40,7 +40,6 @@
         android:layout_height="55dp"
         android:background="@drawable/button_states"
         android:onClick="ReturnMain"
-        android:text="назад"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,6 +60,24 @@
         android:text="Switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch2" />
+
+    <Button
+        android:id="@+id/btnRu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_states"
+        android:onClick="ruLangV"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <Button
+        android:id="@+id/btnEn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_states"
+        android:onClick="enLangV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRu" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

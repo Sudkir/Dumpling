@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Dumplings</string>
+    <string name="boost_message">Not enough upgrade points</string>
+    <string name="btn_settings">settings</string>
+    <string name="btn_upgrade">upgrade</string>
+    <string name="btn_enLanguage">English</string>
+    <string name="btn_ruLanguage">Русский</string>
+    <string name="btn_back">back</string>
+</resources>
