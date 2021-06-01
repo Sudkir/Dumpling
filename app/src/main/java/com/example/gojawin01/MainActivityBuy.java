@@ -39,9 +39,11 @@ public class MainActivityBuy extends AppCompatActivity {
     public int lvlUpTime = 1; // уровень прокачки
     public int ClickLvl = 1; // уровень прокачки
     boolean timerBool ;
-    public String strUp = "Прокачать клик до ";
     public Button btnbooster;
     public Button btnboosterTime;
+    public Button btnTimer;
+    public Button exit;
+
 
     public TextView price; // показ цены клика
     public TextView priceTime; // показ цены тайма
@@ -62,7 +64,9 @@ public class MainActivityBuy extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main_buy);
         btnbooster =findViewById(R.id.btnBooster);
+        exit =findViewById(R.id.exitBtn);
         btnboosterTime =findViewById(R.id.btnBoosterTime);
+        btnTimer =findViewById(R.id.btnTimer);
         price = findViewById(R.id.Price);
         priceTime = findViewById(R.id.PriceTime);
         countView = findViewById(R.id.CountView);
@@ -70,6 +74,7 @@ public class MainActivityBuy extends AppCompatActivity {
         //передача переменных
         Send();
         LoadData();
+        UpLanguage();
 
 
         //обраобтка свайпов на фоне
@@ -129,8 +134,7 @@ public class MainActivityBuy extends AppCompatActivity {
         countView.setText(Integer.toString(mCount));
         priceTime.setText(Integer.toString(boostUpTime));
         price.setText(Integer.toString(boostUp));
-        btnbooster.setText(strUp+ ClickLvl);
-        btnboosterTime.setText(strUp+ lvlUpTime);
+
         Button b;
         if (timerBool) b = findViewById(R.id.btnTimer);
         else b = findViewById(R.id.btnBoosterTime);
@@ -195,6 +199,26 @@ public class MainActivityBuy extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MediaPlayerMusic.onPause();
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void UpLanguage() {
+        btnbooster.setText(getResources().getString(R.string.btn_upClick)+" "+ Integer.toString(ClickLvl));
+        exit.setText(getResources().getString(R.string.btn_back));
+        btnboosterTime.setText(getResources().getString(R.string.btn_upAutoClick)+" "+ Integer.toString(lvlUpTime+1));
+        btnTimer.setText(R.string.btn_buyAutoClick);
+
+
+        TextView textView;
+        textView = findViewById(R.id.textViewBuyFor1);
+        textView.setText(R.string.btn_buyFor);
+
+        textView = findViewById(R.id.textViewBuyFor2);
+        textView.setText(R.string.btn_buyFor);
+
+        textView = findViewById(R.id.textViewBuyFor3);
+        textView.setText(R.string.btn_buyFor);
+
     }
 
 
@@ -287,7 +311,7 @@ public class MainActivityBuy extends AppCompatActivity {
             boostUp = boostUp *2;
             //50 × 1.07² = 54,24 2=lvl 50=start price
             price.setText(Integer.toString(boostUp));
-            btnbooster.setText(strUp+ClickLvl);
+            btnbooster.setText(getResources().getString(R.string.btn_upClick)+" "+ Integer.toString(ClickLvl));
 
             //получение достижений
             if (ClickLvl ==10) {
@@ -328,7 +352,7 @@ public class MainActivityBuy extends AppCompatActivity {
         //формула прокачки
         if (mCount>= boostUpTime) {
             lvlUpTime++;
-            btnbooster.setText(strUp+ (ClickLvl+1));
+            btnboosterTime.setText(getResources().getString(R.string.btn_upAutoClick)+" "+ Integer.toString(lvlUpTime+1));
             mCount = mCount - boostUpTime;
             boostUpTime = boostUpTime * 6;
 

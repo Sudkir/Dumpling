@@ -6,4 +6,9 @@
     <string name="btn_enLanguage">English</string>
     <string name="btn_ruLanguage">Русский</string>
     <string name="btn_back">назад</string>
+    <string name="btn_buyFor">Купить за</string>
+    <string name="btn_upClick">прокачать клик до</string>
+    <string name="btn_upAutoClick">прокачать автоклик до</string>
+    <string name="btn_buyAutoClick">купить автоклик</string>
+    <string name="switch_sound">музыка</string>
 </resources>
