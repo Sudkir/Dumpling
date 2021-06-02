@@ -132,6 +132,14 @@ Button buttonBack;
     }
 
 
+    public void Share() {
+        String url = "http://www.example.com";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
+
 
     public void ruLangV(View view) {
         ruLang();
@@ -144,6 +152,7 @@ Button buttonBack;
         getBaseContext().getResources().updateConfiguration(configuration, null);
         setTitle(R.string.app_name);
         UpLanguage();
+
     }
 
 

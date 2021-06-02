@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,12 +20,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import java.security.cert.CertPathBuilder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
+
+import io.reactivex.schedulers.Schedulers;
 
 
 //класс для анимации
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public int mCount =0; //общее количесво очков
     public int lvlUpOne = 1; // клэф прокачки
     public int lvlClick = 1; // уровень прокачки
+    public String dateLast = "";
     public int boostUpTime = 500;
     public int lvlUpTime = 1; // уровень прокачки
     public TextView mShowCount; // показ очков
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonUp;//прокачки
     Button buttonSet;//настройки
 
-    //runs without a timer by reposting this handler at the end of the runnable
+
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
 
@@ -104,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_UPONE = "lvlUp"; //коэф прокачки
     public static final String APP_PREFERENCES_CLICKLVL = "ClickLvL"; //уровень прокачки
     public static final String APP_PREFERENCES_MUTE = "Mute"; //мут музыки
+    public static final String APP_PREFERENCES_DATE = "Date"; //last visit date
 
 
     SharedPreferences mSettings;
@@ -114,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFY_ID = 1;
     // Идентификатор канала
     private static String CHANNEL_ID = "CHANNEL_ID";
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
@@ -135,10 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
         buttonUp = findViewById(R.id.btnUpgrade);
         buttonUp.setText(R.string.btn_upgrade);
-
-
-
-
 
         timerTextView = findViewById(R.id.timerTxt);
         mShowCount = findViewById(R.id.textView);
@@ -170,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MediaPlayerMusic.onPause();
+        DInt();
         //пауза приложения
 
     }
@@ -179,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //onCreate->onStart->onResume
 
-        //музыка
-        MediaPlayerMusic.Init(this);
+
+
 
         //количествао очков
         if (mSettings.contains(APP_PREFERENCES_SCORE)) {
@@ -189,6 +197,13 @@ public class MainActivity extends AppCompatActivity {
             //переводит очки
             String valueCount= mShowCount.getText().toString();
             mCount=Integer.parseInt(valueCount);
+        }
+        //date
+        if (mSettings.contains(APP_PREFERENCES_DATE)) {
+            String value=mSettings.getString(APP_PREFERENCES_DATE, "");
+            if (value != null) {
+                dateLast=value;
+            }
         }
         //прокачка клика
         if (mSettings.contains(APP_PREFERENCES_PRICESCORE)) {
@@ -240,6 +255,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
+
+
+        //музыка
+        MediaPlayerMusic.Init(this);
+        //сколько не было
+        DShow();
+
     }
 
     protected void onStop(){
@@ -273,6 +296,9 @@ public class MainActivity extends AppCompatActivity {
         boolean boolMute = muteBool;
         editor.putBoolean(APP_PREFERENCES_MUTE, boolMute);
         editor.apply();
+
+        //date
+        editor.putString(APP_PREFERENCES_DATE, dateLast);
 
     }
 
@@ -335,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public <string> void showNotification(string strContentTitle,string strContentText){
+    public <string> void showNotification(String strContentTitle, Object strContentText){
 
         //создание канала
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -366,6 +392,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     public void AnimImageBtn(View view) {
         MediaPlayerMusic.onResumeFood();
@@ -374,7 +401,6 @@ public class MainActivity extends AppCompatActivity {
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
         animation.setInterpolator(interpolator);
         imageButton.setAnimation(animation);
-
         //счетчик
         mCount = mCount + lvlUpOne;
         if (mShowCount != null)
@@ -384,6 +410,11 @@ public class MainActivity extends AppCompatActivity {
 
     static final private int CHOOSE_THIEF = 0;// параметр RequestCode
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void ActivitySettingsShowV(View v){
+        ActivitySettingsShow();
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void ActivitySettingsShow()
     {
@@ -392,15 +423,15 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("mute", muteBool);
         startActivity(intent);
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void ActivitySettingsShowV(View v){
-        ActivitySettingsShow();
-    }
+
+
 
 
 
     //работа с окном прокачки
-
+    public void ActivityBuyShowV(View view) {
+        ActivityBuyShow();
+    }
     private void ActivityBuyShow()
     {
         Intent intent = new Intent(MainActivity.this, MainActivityBuy.class);
@@ -411,9 +442,7 @@ public class MainActivity extends AppCompatActivity {
         //старт окна
         startActivityForResult(intent, CHOOSE_THIEF);
     }
-    public void ActivityBuyShowV(View view) {
-        ActivityBuyShow();
-    }
+
 
 
     public void AnimDollar()
@@ -434,5 +463,24 @@ public class MainActivity extends AppCompatActivity {
     public void Share(View v)
     {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/sudkir")));
+
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void DInt()
+    {
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MMddHHmmss");
+        dateLast = df.format(Calendar.getInstance().getTime());
+        //int i = Integer.parseInt(sDate.replaceAll("[\\D]", ""));
+        //
+        //        //return Integer.parseInt (sDate);
+    }
+
+    public  void  DShow() {
+        Toast toastTimer = Toast.makeText(this, dateLast, Toast.LENGTH_SHORT);
+        toastTimer.show();
+    }
+
+
 }
