@@ -35,9 +35,6 @@ Button buttonBack;
         UpLanguage();//установка языка
 
 
-
-
-
         //обраобтка свайпов на фоне
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setOnTouchListener(new OnSwipeTouchListener(context) {
@@ -169,17 +166,6 @@ public void Starting()
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     protected void onPause(){

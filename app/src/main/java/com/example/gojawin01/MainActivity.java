@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,13 +25,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import java.security.cert.CertPathBuilder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
-
-import io.reactivex.schedulers.Schedulers;
 
 
 //класс для анимации
@@ -178,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MediaPlayerMusic.onPause();
-        DInt();
+        DateSave();
         //пауза приложения
 
     }
@@ -260,12 +256,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-
         //музыка
         MediaPlayerMusic.Init(this);
         //сколько не было
-        DShow();
+        DateLoad();
 
     }
 
@@ -455,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void DInt()
+    public void DateSave()
     {
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MMddHHmmss");
         dateLast = df.format(Calendar.getInstance().getTime());
@@ -464,8 +458,62 @@ public class MainActivity extends AppCompatActivity {
         //        //return Integer.parseInt (sDate);
     }
 
-    public  void  DShow() {
-        Toast toastTimer = Toast.makeText(this, dateLast, Toast.LENGTH_SHORT);
+
+
+
+
+    public void DateLoad() {
+        @SuppressLint("SimpleDateFormat") DateFormat d = new SimpleDateFormat("MMddHHmmss");
+        int i = Integer.parseInt(d.format(Calendar.getInstance().getTime()))-Integer.parseInt(dateLast);
+        int e =0;
+        //sec
+        if(i<=60) {
+            e=i;
+        }
+        if (i>60) {
+            e=i%100;
+            i=i/100;
+        }
+        //min
+        if (i>60) {
+            e= e + (i%100)*60;
+            i=i/100;
+        }
+        else
+        {
+            e=e+i*60;
+        }
+        //hh
+        if (i>60) {
+            e= e + (i%100)*3600;
+            i=i/100;
+        }
+        else
+        {
+            e=e+i*3600;
+        }
+        //day
+        if (i>60) {
+            e= e + (i%100)*3600*24;
+            i=i/100;
+        }
+        else
+        {
+            e=e+i*3600*24;
+        }
+        //mm
+        //not work
+        if (i>60) {
+            e= e + (i%100)*3600*24*30;
+            i=i/100;
+        }
+        else
+        {
+            e=e+i*3600*24*30;
+        }
+
+        String s = Integer.toString(e);
+        Toast toastTimer = Toast.makeText(this, s, Toast.LENGTH_SHORT);
         toastTimer.show();
     }
 
