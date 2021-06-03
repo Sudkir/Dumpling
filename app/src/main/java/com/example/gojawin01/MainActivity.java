@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onPause() {
         super.onPause();
         MediaPlayerMusic.onPause();
@@ -196,7 +197,10 @@ public class MainActivity extends AppCompatActivity {
             mShowCount.setText(mSettings.getString(APP_PREFERENCES_SCORE, ""));
             //переводит очки
             String valueCount= mShowCount.getText().toString();
-            mCount=Integer.parseInt(valueCount);
+            if (valueCount != null) {
+                mCount=Integer.parseInt(valueCount);
+            }
+
         }
         //date
         if (mSettings.contains(APP_PREFERENCES_DATE)) {
@@ -265,41 +269,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void EditSave() {
+        //сохранение очков в память при закрытии приложения
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putString(APP_PREFERENCES_SCORE, Integer.toString(mCount));
+        editor.putString(APP_PREFERENCES_UPTIME, Integer.toString(lvlUpTime));
+        editor.putString(APP_PREFERENCES_UPONE, Integer.toString(lvlUpOne));
+        editor.putString(APP_PREFERENCES_CLICKLVL, Integer.toString(lvlClick));
+        editor.putString(APP_PREFERENCES_PRICETIME, Integer.toString(boostUpTime));
+        editor.putString(APP_PREFERENCES_PRICESCORE, Integer.toString(boostUp));
+        editor.putString(APP_PREFERENCES_DATE, dateLast);
+        editor.putBoolean(APP_PREFERENCES_BOOL, bol);
+        editor.putBoolean(APP_PREFERENCES_MUTE, muteBool);
+        editor.apply();
+    }
+
     protected void onStop(){
         super.onStop();
-        //сохранение очков в память при закрытии приложения
-        String strCount = mShowCount.getText().toString();
-
-        SharedPreferences.Editor editor = mSettings.edit();
-
-        editor.putString(APP_PREFERENCES_SCORE, strCount);
-
-        String strLvlUpTime = Integer.toString(lvlUpTime);
-        editor.putString(APP_PREFERENCES_UPTIME, strLvlUpTime);
-
-        String strLvlUpOne = Integer.toString(lvlUpOne);
-        editor.putString(APP_PREFERENCES_UPONE, strLvlUpOne);
-
-        String strLvlUpShow = Integer.toString(lvlClick);
-        editor.putString(APP_PREFERENCES_CLICKLVL, strLvlUpShow);
-
-        String strPriceTime = Integer.toString(boostUpTime);
-        editor.putString(APP_PREFERENCES_PRICETIME, strPriceTime);
-
-        String strPriceScore = Integer.toString(boostUp);
-        editor.putString(APP_PREFERENCES_PRICESCORE, strPriceScore);
-
-        boolean boolTimer = bol;
-        editor.putBoolean(APP_PREFERENCES_BOOL, boolTimer);
-        editor.apply();
-
-        boolean boolMute = muteBool;
-        editor.putBoolean(APP_PREFERENCES_MUTE, boolMute);
-        editor.apply();
-
-        //date
-        editor.putString(APP_PREFERENCES_DATE, dateLast);
-
+        EditSave();
     }
 
 
